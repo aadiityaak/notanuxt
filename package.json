@@ -13,6 +13,7 @@
     "@nuxtjs/axios": "^5.13.6",
     "@primevue/themes": "^4.1.1",
     "dotenv": "^16.4.5",
+    "lucide-vue-next": "^0.453.0",
     "nuxt": "^3.13.2",
     "primevue": "^4.1.1",
     "vue": "latest",
