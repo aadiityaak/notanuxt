@@ -1,6 +1,10 @@
+<script setup lang="ts">
+// You might choose this based on an API call or logged-in status
+const layout = "dashboard";
+</script>
+
 <template>
-  <div>
-    <NuxtRouteAnnouncer />
+  <NuxtLayout :name="layout">
     <NuxtPage />
-  </div>
+  </NuxtLayout>
 </template>
