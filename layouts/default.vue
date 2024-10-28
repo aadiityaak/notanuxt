@@ -1,12 +1,9 @@
 <template>
-    <div>
-      <header>
-        <h1>My App</h1>
-      </header>
-      <body>
+    <div class="default flex flex-col min-h-screen justify-between">
+      <body class="bg-surface-50 dark:bg-surface-800 flex flex-col justify-center">
         <slot />
       </body>
-      <footer>
+      <footer class="p-4 text-center text-surface-500 dark:text-surface-400 border-t border-surface-200 dark:border-surface-700">
         <p>&copy; 2024 My App</p>
       </footer>
     </div>
@@ -19,17 +16,4 @@
   </script>
   
   <style scoped>
-  header {
-    background: #42b983;
-    color: white;
-    padding: 20px;
-    text-align: center;
-  }
-  
-  footer {
-    text-align: center;
-    padding: 10px;
-    background: #333;
-    color: white;
-  }
   </style>
