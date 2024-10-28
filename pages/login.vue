@@ -1,15 +1,23 @@
 <template>
-  <div class="login-container py-5 max-w-[400px] mx-auto">
-    <h1 class="text-2xl font-bold mb-4">Login</h1>
-    <div v-if="isLoggedIn">
-      <p>Anda sudah login.</p>
-      <Button label="Ke Beranda" @click="goHome" ><Lucide icon="House" class="w-6 h-6" />Home</Button>
-    </div>
-    <div v-else>
-      <InputText v-model="email" placeholder="Email" class="mb-2 w-full" />
-      <Password v-model="password" placeholder="Password" class="mb-2 w-full" toggleMask />
-      <Button label="Login" @click="handleLogin" ><LogIn /> Login</Button>
-      <p v-if="error" class="error">{{ error }}</p>
+  <div class="h-screen content-center justify-center">
+    <div class="login-container py-5 max-w-[400px] mx-auto rounded-lg border border-surface-200 bg-surface-50 dark:border-surface-700 dark:bg-surface-800 p-4 min-h-[50vh]">
+      <h1 class="text-2xl font-bold mb-4">Login</h1>
+      <div v-if="isLoggedIn">
+        <Message severity="success" class="mb-5 mt-3">Anda sudah login.</Message>
+        <Button label="Ke Beranda" @click="goHome" ><LucideHome class="w-6 h-6" />Ke Beranda</Button>
+      </div>
+      <div v-else>
+        <FloatLabel variant="on" class="mb-4">
+          <InputText id="on_label" v-model="email" variant="filled" size="large" class="w-full" />
+          <label for="on_label">Email</label>
+        </FloatLabel>
+        <FloatLabel variant="on" class="mb-4">
+          <InputText id="on_label" v-model="password" type="password" variant="filled" size="large" class="w-full" />
+          <label for="in_label">Password</label>
+        </FloatLabel>
+        <Button label="Login" @click="handleLogin" ><LucideLogIn /> Login</Button>
+        <Message v-if="error" severity="error">{{ error }}</Message>
+      </div>
     </div>
   </div>
 </template>
@@ -27,7 +35,7 @@ export default {
   },
   computed: {
     isLoggedIn() {
-      return !!localStorage.getItem('token'); // Memeriksa apakah token ada
+      return process.client && !!localStorage.getItem('token'); 
     }
   },
   methods: {
@@ -39,11 +47,9 @@ export default {
           password: this.password
         });
 
-        // Simpan token dan informasi pengguna
         localStorage.setItem('token', response.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.user)); // Simpan informasi pengguna
+        localStorage.setItem('user', JSON.stringify(response.data.user)); // Ensure user is serializable
 
-        // Redirect ke homepage
         this.$router.push('/');
       } catch (err) {
         this.error = err.response?.data?.message || 'Terjadi kesalahan, silakan coba lagi.';
@@ -57,8 +63,5 @@ export default {
 </script>
 
 <style scoped>
-.error {
-  color: red;
-  text-align: center;
-}
+
 </style>

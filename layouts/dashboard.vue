@@ -1,18 +1,21 @@
 <template>
-    <div class="dashboard">
-      <Sidebar />
-      <main>
+  <div class="dashboard">
+    <main class="dashboard__main">
+      <div class="flex">
+        <MenuVertical />
+        <div class="container p-4">
         <Header />
         <slot />
-      </main>
-    </div>
-  </template>
-  
-  <script>
+        </div>
+      </div>
 
-  export default {
-    export default {
-      middleware: 'auth'
-    }
-  }
-  </script>
+    </main>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'DashboardLayout',
+  middleware: 'auth'
+}
+</script>

@@ -1,17 +1,17 @@
-import Aura from '@primevue/themes/aura';
+import Lara from '@primevue/themes/lara';
 import { defineNuxtConfig } from 'nuxt/config';
 
 export default defineNuxtConfig({
-  plugins: ['~/plugins/lucide.js'],
-  modules: [
-    '@primevue/nuxt-module'
-  ],
+  modules: ['@primevue/nuxt-module', 'nuxt-lucide-icons'],
   primevue: {
     autoImport: true,
     options: {
       theme: {
-        preset: Aura
-      }
+        preset: Lara,
+        options: {
+          darkModeSelector: false ,
+        }
+      },
     }
   },
   runtimeConfig: {
