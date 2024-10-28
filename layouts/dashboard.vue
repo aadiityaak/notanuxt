@@ -1,11 +1,13 @@
 <template>
   <div class="dashboard">
-    <main class="dashboard__main">
+    <main class="bg-gray-100 dark:bg-gray-900">
       <div class="flex">
         <MenuVertical />
         <div class="container p-4">
         <Header />
-        <slot />
+        <div class="bg-white shadow rounded-lg p-4 mb-4 mt-4">
+          <slot />
+        </div>
         </div>
       </div>
 
