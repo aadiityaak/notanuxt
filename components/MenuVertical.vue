@@ -1,6 +1,6 @@
 <template>
   <div class="menu-vertical">
-    <div class="flex flex-col min-w-[240px] md:min-w-[350px] mt-4 mb-4 ms-4 h-[calc(100vh-2rem)] border border-surface-200 rounded-lg bg-white dark:bg-surface-800">
+    <div class="flex flex-col w-[300px] mt-4 mb-4 ms-4 h-[calc(100vh-2rem)] border border-surface-200 rounded-lg bg-white dark:bg-surface-800 sticky top-4">
       <div class="flex items-center justify-between px-6 pt-4 shrink-0">
         <span class="inline-flex items-center gap-2">
           <span class="font-semibold text-2xl text-primary">Menu</span>

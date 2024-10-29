@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, computed, provide } from 'vue';
-import { useRouter } from 'vue-router';
 
 // State untuk menyimpan status login
 const isLoggedIn = ref(process.client && !!localStorage.getItem('token'));

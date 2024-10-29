@@ -16,7 +16,7 @@
           <label for="in_label">Password</label>
         </FloatLabel>
         <Button label="Login" @click="handleLogin" class="mt-4"><LucideLogIn /> Login</Button>
-        <Message v-if="error" severity="error">{{ error }}</Message>
+        <Message class="mt-3" v-if="error" severity="error">{{ error }}</Message>
       </div>
     </div>
   </div>
