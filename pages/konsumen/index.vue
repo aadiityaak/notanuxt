@@ -63,7 +63,6 @@
 import axios from 'axios';
 
 export default {
-  name: 'KonsumenPage',
   data() {
     return {
       customers: ref(new Array(10)),

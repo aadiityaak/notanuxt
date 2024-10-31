@@ -3,9 +3,9 @@
     <div class="flex justify-between items-center">
       <NuxtLink to="/"><LucideHome class="w-6 h-6" /></NuxtLink>
       <Button 
-        v-if="isLoggedIn" 
+        v-if="isAuthenticated" 
         label="Logout" 
-        @click="handleLogout" 
+        @click="logout" 
         size="small"
         severity="danger"
         outlined >
@@ -16,24 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from 'vue';
-import { useRouter } from 'vue-router';
-
-// Menggunakan inject untuk mendapatkan status login
-const isLoggedIn = inject('isLoggedIn');
-const router = useRouter();
-
-const handleLogout = () => {
-  // Hapus token dari local storage
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
-
-  // Update status login
-  isLoggedIn.value = false;
-
-  // Redirect ke halaman login setelah logout
-  router.push('/login');
-};
+const { isAuthenticated, logout } = useSanctumAuth()
 </script>
 
 <style scoped>

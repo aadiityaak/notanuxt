@@ -2,7 +2,7 @@ import Lara from '@primevue/themes/lara';
 import { defineNuxtConfig } from 'nuxt/config';
 
 export default defineNuxtConfig({
-  modules: ['@primevue/nuxt-module', 'nuxt-lucide-icons'],
+  modules: ['@primevue/nuxt-module', 'nuxt-lucide-icons', 'nuxt-auth-sanctum'],
   primevue: {
     autoImport: true,
     options: {
@@ -14,9 +14,11 @@ export default defineNuxtConfig({
       },
     }
   },
-  runtimeConfig: {
-    public: {
-      API_URL: process.env.API_URL || 'http://localhost:3000/api', 
+  sanctum: {
+    baseUrl: process.env.API_URL,
+    redirect: {
+      onGuestOnly: '/dashboard',
+      onLogin: '/dashboard',
     },
   },
   css: ['~/assets/css/main.css'],
