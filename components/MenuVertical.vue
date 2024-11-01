@@ -23,9 +23,6 @@
                 <LucideUser class="w-4 h-4 mr-2" /> List
                 <span class="inline-flex items-center justify-center ml-auto bg-primary text-primary-contrast rounded-full" style="min-width: 1.5rem; height: 1.5rem">50</span>
               </NavLink>
-              <NavLink to="/konsumen/kategori" > 
-                <LucideBookUser class="w-4 h-4 mr-2" /> Kategori
-              </NavLink>
             </ul>
           </li>
         </ul>

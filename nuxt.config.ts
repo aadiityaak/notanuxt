@@ -17,7 +17,7 @@ export default defineNuxtConfig({
   sanctum: {
     baseUrl: process.env.API_URL,
     redirect: {
-      onGuestOnly: '/dashboard',
+      onGuestOnly: '/login',
       onLogin: '/dashboard',
     },
   },
