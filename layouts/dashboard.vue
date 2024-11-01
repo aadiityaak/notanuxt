@@ -15,9 +15,8 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'DashboardLayout',
-  middleware: 'auth'
-}
+<script lang="ts" setup>
+  definePageMeta({
+    middleware: ['sanctum:auth'],
+  })
 </script>

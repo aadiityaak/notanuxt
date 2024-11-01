@@ -68,47 +68,34 @@
       </ScrollPanel>
       <div class="mt-auto">
         <hr class="mb-4 mx-4 border-t border-0 border-surface-200 dark:border-surface-700" />
-        <a v-ripple class="m-4 flex items-center cursor-pointer p-4 gap-2 rounded text-surface-700 hover:bg-surface-100 dark:text-surface-0 dark:hover:bg-surface-800 duration-150 transition-colors p-ripple">
+        <NuxtLink to="/profile" v-ripple class="m-4 flex items-center cursor-pointer p-4 gap-2 rounded text-surface-700 hover:bg-surface-100 dark:text-surface-0 dark:hover:bg-surface-800 duration-150 transition-colors p-ripple">
           <Avatar :image="avatarImage" shape="circle" />
           <span class="font-bold">{{ userName }}</span>
-        </a>
+        </NuxtLink>
       </div>
     </div>
   </div>
 </template>
 
-<script>
-import avatarImage from '@/assets/images/girl.png'; 
+<script setup lang="ts">
+  const user = useSanctumUser() as any;
+  const avatarImage = ref('');
+  const userName = ref('');
 
-export default {
-  name: 'MenuVertical',
-  data() {
-    return {
-      avatarImage,
-      isSubmenuOpen: {
-        favorites: false,
-        application: false,
-        reports: false,
-        detailedReports: false,
-      },
-      userName: 'Nama User'
+  onMounted(() => {
+    if (user.value) {
+      avatarImage.value = user.value.avatar;
+      userName.value = user.value.name;
     }
-  },
-  mounted() {
-    // Mengambil data pengguna dari local storage
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      const user = JSON.parse(userData);
-      this.userName = user.name; // Mengambil nama pengguna
-    }
-  },
-  methods: {
-    toggleSubmenu(menu) {
-      this.isSubmenuOpen[menu] = !this.isSubmenuOpen[menu];
-    }
-  }
-}
+  });
+
+  const isSubmenuOpen = ref({
+    konsumen: false,
+    order: false,
+    option: false,
+  }) as any;
+
+  const toggleSubmenu = (menu: string) => {
+    isSubmenuOpen.value[menu] = !isSubmenuOpen.value[menu];
+  };
 </script>
-
-<style scoped>
-</style>

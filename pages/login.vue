@@ -1,11 +1,9 @@
-<script lang="ts" setup>
-definePageMeta({
-  middleware: ['sanctum:guest'],
-})
-</script>
-
 <template>
   <LoginForm />
 </template>
 
-<style scoped></style>
+<script lang="ts" setup>
+  definePageMeta({
+    middleware: ['sanctum:guest'],
+  })
+</script>

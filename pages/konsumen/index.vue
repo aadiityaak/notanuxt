@@ -5,7 +5,7 @@
         <DataTable :value="data" scrollable tableStyle="min-width: 100rem">
           <Column field="name" header="Nama" frozen></Column>
           <Column field="alamat" header="Alamat"></Column>
-          <Column field="whatsapp" header="Whatsapp"></Column>
+          <Column field="phone" header="Whatsapp"></Column>
           <Column field="kategori" header="Kategori"></Column>
           <Column field="pekerjaan" header="Pekerjaan"></Column>
           <Column field="bank" header="Bank"></Column>
