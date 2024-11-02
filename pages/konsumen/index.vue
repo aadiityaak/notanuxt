@@ -1,10 +1,16 @@
 <template>
       <div v-if="error" class="error">{{ error }}</div>
-      <DataTable :value="data">
+      <DataTable :value="data" size="large">
         <Column field="name" header="Nama"></Column>
         <Column field="alamat" header="Alamat"></Column>
         <Column field="phone" header="Whatsapp"></Column>
-        <Column field="action" header="Action"></Column>
+        <Column header="" >
+          <template #body="slotProps">
+              <Button severity="primary" @click="viewKonsumen(slotProps.data)" variant="outlined" size="small">
+                <Icon name="lucide:eye" />
+              </Button>
+          </template>
+        </Column>
       </DataTable>
   </template>
   
@@ -13,9 +19,11 @@
       title: 'List Konsumen',
     })
     const client = useSanctumClient();
-    const customers = ref([]);
-    const { data, error, refresh } = await useAsyncData('users', () =>
+    const { data, error } = await useAsyncData('customers', () =>
         client('/api/customers')
     )
-    console.log(process.env.API_URL);
+
+    const viewKonsumen = (konsumen: any) => {
+      navigateTo(`/konsumen/${konsumen.id}`)
+    }
   </script>

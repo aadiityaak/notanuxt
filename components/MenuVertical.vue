@@ -15,7 +15,7 @@
         }"
         >
             <template #item="{ item }">
-                <NuxtLink :to="item.to" v-ripple class="flex items-center px-4 py-2 cursor-pointer group" :class="{ 'bg-slate-100 rounded': item.to === activePage }">
+                <NuxtLink :to="item.to" v-ripple class="flex items-center px-4 py-2 cursor-pointer group" :class="{ '!bg-slate-100 rounded': item.to === activePage }">
                     <Icon v-if="item.icon" :name="item.icon" class="mr-2" />
                     <span class="font-medium">{{ item.label }}</span>
                     <Badge v-if="item.badge" class="ml-auto mr-2" :value="item.badge" />

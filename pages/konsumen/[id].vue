@@ -1,18 +1,5 @@
 <template>
-    <!-- 
-                 $table->string('name', 100);
-            $table->string('phone', 15);
-            $table->string('alamat', 255)->nullable();
-            $table->string('kategori', 100)->nullable();
-            $table->string('pekerjaan', 200)->nullable();
-            $table->string('sertifikat', 50)->nullable();
-            $table->decimal('nilai_transaksi')->nullable();
-            $table->decimal('harga_real')->nullable();
-            $table->decimal('harga_kesepakatan')->nullable();
-            $table->decimal('data_pajak_pembeli')->nullable();
-            $table->decimal('data_pajak_penjual')->nullable();
-             -->
-    <form>
+    <form @submit.prevent="handleUpdate" ref="form">
         <FloatLabel variant="on" class="mb-4">
             <InputText id="name" v-model="state.name" class="w-full" />
             <label for="name">Nama Lengkap</label>
@@ -57,11 +44,32 @@
             <InputText id="data_pajak_penjual" v-model="state.data_pajak_penjual" class="w-full" />
             <label for="data_pajak_penjual">Data Pajak Penjual</label>
         </FloatLabel>
-        <Button label="Register" type="submit" class="mt-4"><Icon name="lucide:user-plus"/> Tambah Konsumen</Button>
+        <Message severity="success" v-if="message">{{ message }}</Message>
+        <Button label="{{ textButton }}" type="submit" class="mt-4"><Icon name="lucide:user-plus"/> {{ textButton }}</Button>
     </form>
 </template>
 
 <script setup lang="ts">
+import Message from 'primevue/message';
+
+    const client = useSanctumClient()
+    const idUser = useRoute().params.id
+    const textButton = ref('Register')
+    const message = ref('')
+
+    const handleUpdate = async () => {
+        await client(`/api/customers/${idUser}`, {
+            method: 'PUT',
+            body: state.value
+        })
+        message.value = 'Update Success'
+    }
+    const { data, error } = await useAsyncData(`customers-${idUser}`, () =>
+        client(`/api/customers/${idUser}`)
+    )
+    definePageMeta({
+        title: 'Edit Konsumen',
+    })
     const state = ref({
         name: '',
         phone: '',
@@ -75,13 +83,12 @@
         data_pajak_pembeli: '',
         data_pajak_penjual: '',
     })
-    definePageMeta({
-        title: 'Tambah Konsumen',
+
+    onMounted(() => {
+        if (data.value) {
+            state.value = { ...state.value, ...data.value };
+        }
+        textButton.value = 'Update'
     })
-    const client = useSanctumClient();
-    const customers = ref([]);
-    const { data, error, refresh } = await useAsyncData('users', () =>
-        client('/api/customers')
-    )
-    
+
 </script>
