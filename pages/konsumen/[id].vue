@@ -50,8 +50,10 @@
 </template>
 
 <script setup lang="ts">
-import Message from 'primevue/message';
-
+    definePageMeta({
+        title: 'Edit Konsumen',
+        middleware: ['sanctum:auth'],
+    })
     const client = useSanctumClient()
     const idUser = useRoute().params.id
     const textButton = ref('Register')
@@ -67,9 +69,6 @@ import Message from 'primevue/message';
     const { data, error } = await useAsyncData(`customers-${idUser}`, () =>
         client(`/api/customers/${idUser}`)
     )
-    definePageMeta({
-        title: 'Edit Konsumen',
-    })
     const state = ref({
         name: '',
         phone: '',
@@ -90,5 +89,4 @@ import Message from 'primevue/message';
         }
         textButton.value = 'Update'
     })
-
 </script>

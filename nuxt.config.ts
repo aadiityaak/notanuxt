@@ -33,9 +33,11 @@ export default defineNuxtConfig({
   sanctum: {
     baseUrl: process.env.API_URL,
     redirect: {
+      keepRequestedRoute: true,
       onAuthOnly: '/login',
-      onGuestOnly: '/dashboard',
-      onLogout: '/login'
+      onGuestOnly: '/profile',
+      onLogin: '/',
+      onLogout: '/logout',
     },
   },
   css: ['~/assets/css/main.css'],

@@ -62,6 +62,10 @@
 </template>
 
 <script setup lang="ts">
+    definePageMeta({
+        title: 'Tambah Konsumen',
+        middleware: ['sanctum:auth'],
+    })
     const state = ref({
         name: '',
         phone: '',
@@ -74,9 +78,6 @@
         harga_kesepakatan: '',
         data_pajak_pembeli: '',
         data_pajak_penjual: '',
-    })
-    definePageMeta({
-        title: 'Tambah Konsumen',
     })
     const client = useSanctumClient();
     const customers = ref([]);

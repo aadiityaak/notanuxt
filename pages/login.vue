@@ -8,7 +8,7 @@
           <InputText type="password" id="password" v-model="state.password" class="w-full" />
           <label for="password">Password</label>
       </FloatLabel>
-      <Button label="Register" type="submit" class="mt-4"><Icon name="lucide:log-in"/> Login</Button>
+      <Button label="Register" type="submit" ><Icon name="lucide:log-in"/> Login</Button>
   </form>
 </template>
 
