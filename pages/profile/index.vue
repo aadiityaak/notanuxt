@@ -9,7 +9,7 @@
               <InputText id="email" v-model="state.email" class="w-full" />
               <label for="email">Email</label>
           </FloatLabel>
-            <Button label="Update" type="submit" ><LucideLogIn /> Update Profile</Button>
+            <Button label="Update" type="submit" ><Icon name="lucide:user-plus"/> Update Profile</Button>
           </form>
     </div>
 </template>

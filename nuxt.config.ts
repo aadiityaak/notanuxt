@@ -2,7 +2,7 @@ import Lara from '@primevue/themes/lara';
 import { defineNuxtConfig } from 'nuxt/config';
 
 export default defineNuxtConfig({
-  modules: ['@primevue/nuxt-module', 'nuxt-lucide-icons', 'nuxt-auth-sanctum', '@nuxt/icon'],
+  modules: ['@primevue/nuxt-module', 'nuxt-auth-sanctum', '@nuxt/icon'],
   primevue: {
     autoImport: true,
     options: {
