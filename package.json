@@ -10,11 +10,11 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@nuxt/icon": "^1.6.1",
     "@primevue/themes": "^4.1.1",
     "dotenv": "^16.4.5",
     "nuxt": "^3.13.2",
     "nuxt-auth-sanctum": "^0.5.1",
-    "nuxt-lucide-icons": "^1.0.5",
     "primevue": "^4.1.1",
     "vue": "latest",
     "vue-router": "latest"
