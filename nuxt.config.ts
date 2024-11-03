@@ -31,13 +31,21 @@ export default defineNuxtConfig({
     }
   },
   sanctum: {
+    mode: 'cookie',
     baseUrl: process.env.API_URL,
+    redirectIfAuthenticated: true,
+    redirectIfUnauthenticated: true,
     redirect: {
       keepRequestedRoute: true,
       onAuthOnly: '/login',
       onGuestOnly: '/dashboard',
       onLogout: '/login'
     },
+    globalMiddleware: {
+      enabled: true,
+      allow404WithoutAuth: true,
+    },
+    logLevel: 5,
   },
   css: ['~/assets/css/main.css'],
   postcss: {

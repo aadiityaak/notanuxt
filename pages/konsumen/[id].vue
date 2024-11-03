@@ -52,7 +52,6 @@
 <script setup lang="ts">
     definePageMeta({
         title: 'Edit Konsumen',
-        middleware: ['sanctum:auth'],
     })
     const client = useSanctumClient()
     const idUser = useRoute().params.id

@@ -3,8 +3,7 @@
 </template>
 
 <script>
-export default {
-  title: 'Kategori Order',
-  middleware: ['sanctum:auth'],
-}
+  export default {
+    title: 'Kategori Order',
+  }
 </script>

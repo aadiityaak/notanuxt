@@ -17,7 +17,6 @@
   <script lang="ts" setup>
     definePageMeta({
       title: 'List Konsumen',
-      middleware: ['sanctum:auth'],
     })
     const client = useSanctumClient();
     const { data, error } = await useAsyncData('customers', () =>

@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
   definePageMeta({
-    middleware: ['sanctum:guest'],
+
   })
   const sanctumConfig = useSanctumConfig()
   const sanctumFetch = useSanctumClient()

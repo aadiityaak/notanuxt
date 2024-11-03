@@ -5,8 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-definePageMeta({
-    title: 'Dashboard',
-    middleware: ['sanctum:auth'],
-})
+    definePageMeta({
+        title: 'Dashboard',
+    })
 </script>

@@ -64,7 +64,6 @@
 <script setup lang="ts">
     definePageMeta({
         title: 'Tambah Konsumen',
-        middleware: ['sanctum:auth'],
     })
     const state = ref({
         name: '',
