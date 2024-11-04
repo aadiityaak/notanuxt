@@ -16,13 +16,19 @@
           <InputText type="password" id="password_confirmation" v-model="state.password_confirmation" class="w-full" />
           <label for="password_confirmation">Konfirmasi Password</label>
       </FloatLabel>
+      <Message severity="error" class="mb-4 max-w-[400px] w-full mx-auto" v-if="message">
+        {{ message }}
+      </Message>
       <Button label="Register" type="submit" class="mt-4"><Icon name="lucide:user-plus"/> Register</Button>
   </form>
 </template>
 
 <script setup lang="ts">
   definePageMeta({
-
+    title: 'Register',
+    // sanctum: {
+    //     excluded: true,
+    // }
   })
   const sanctumConfig = useSanctumConfig()
   const sanctumFetch = useSanctumClient()
@@ -35,23 +41,19 @@
     password: '',
     password_confirmation: '',
   })
+
+  const message = ref('')
+
   async function handleRegister() {
-    const credentials = {
-      name: state.value.name,
-      email: state.value.email,
-      password: state.value.password,
-      password_confirmation: state.value.password_confirmation
-    }
     try {
       const response = await sanctumFetch('/register', {
         method: 'POST',
-        body: credentials
+        body: state.value
       })
-      console.log('Registration response:', response) // Debugging line
       await refreshIdentity()
       navigateTo(sanctumConfig.redirect.onGuestOnly || '/')
     } catch (err: any) {
-      console.log('Error during registration:', err) // Debugging line
+      message.value = err.response.data.message
     }
   }
 </script>

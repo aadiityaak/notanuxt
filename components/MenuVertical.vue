@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-  const user = useSanctumUser() as any;
+  const user = ref(useSanctumUser()) as any;
   const avatarImage = ref('');
   const userName = ref('');
   const route = useRoute();
@@ -57,12 +57,12 @@
       icon: 'lucide:user',
       items: [
         { 
-          label: 'List Konsumen', 
+          label: 'List', 
           to: '/konsumen',
           icon: 'lucide:users',
        },
         { 
-          label: 'Add Konsumen', 
+          label: 'Tambah', 
           to: '/konsumen/add',
           icon: 'lucide:user-plus',
         },
@@ -121,5 +121,13 @@
     
 
   })
+
+  watch(user, (newValue) => {
+    console.log('User changed:', newValue); // Debug log
+    if (newValue) {
+        avatarImage.value = newValue.avatar || '';
+        userName.value = newValue.name || '';
+    }
+}, { immediate: true });
 
 </script>

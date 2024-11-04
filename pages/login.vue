@@ -1,5 +1,5 @@
 <template>
-  <Message severity="error" class="mb-4 max-w-[400px] w-full mx-auto" v-if="route.query.redirect">
+  <Message severity="error" class="mb-4 max-w-[400px] w-full mx-auto" v-if="route.query.redirect && route.query.redirect !== '/'">
     Hmmm, sepertinya anda mencoba mengakses halaman
     <em>"{{ route.query.redirect }}"</em>, silahkan login terlebih dahulu
     untuk melanjutkan.
@@ -17,12 +17,17 @@
           <label for="password">Password</label>
       </FloatLabel>
       <Button label="Login" type="submit" ><Icon name="lucide:log-in"/> Login</Button>
+
+      <div class="flex justify-between mt-4">
+        <NuxtLink to="/register" class="text-sm text-surface-900 dark:text-surface-300">Belum punya akun? Daftar</NuxtLink>
+        <NuxtLink to="/forgot-password" class="text-sm text-surface-900 dark:text-surface-300">Lupa Password?</NuxtLink>
+      </div>
   </form>
 </template>
 
 <script setup lang="ts">
   definePageMeta({
-
+    title: 'Login',
   })
   const { login } = useSanctumAuth()
   const route = useRoute()
@@ -35,12 +40,12 @@
   const loginError = ref('')
 
   async function handleLogin() {
-    console.log('Login credentials:', credentials)
     try {
-      login(credentials.value)
+      await login(credentials.value)
+      loginError.value = ''
     }
     catch (err: any) {
-      loginError.value = err.response.data.message || 'Terjadi kesalahan.'
+      loginError.value = err.response._data.message
     }
   }
 
