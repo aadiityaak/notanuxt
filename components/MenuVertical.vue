@@ -42,7 +42,7 @@
   const userStore = useUserStore() as any;
   const user = useSanctumUser() as any;
   const config = useSanctumConfig();
-  const baseUrl = config.baseUrl + '/storage';
+  const storageUrl = config.baseUrl + '/storage';
 
   if (user.value) {
     userStore.setUser({
@@ -52,7 +52,7 @@
   }
   const userName = computed(() => userStore.user.name) as any;
   const avatarImage = computed(() => {
-    return userStore.user.avatar ? `${baseUrl}/${userStore.user.avatar}` : '';
+    return userStore.user.avatar ? `${storageUrl}/${userStore.user.avatar}` : '';
 });
   const route = useRoute();
   const activePage = ref(route.path);
@@ -100,6 +100,23 @@
     },
     {
       key: 3,
+      label: 'Karyawan',
+      icon: 'lucide:users',
+      items: [
+        { 
+          label: 'List', 
+          to: '/karyawan',
+          icon: 'lucide:users',
+        },
+        { 
+          label: 'Add', 
+          to: '/karyawan/add',
+          icon: 'lucide:user-plus',
+        },
+      ],
+    },
+    {
+      key: 4,
       label: 'Option',
       icon: 'lucide:settings',
       items: [
@@ -107,7 +124,7 @@
           label: 'Umum', 
           to: '/option',
           icon: 'lucide:layout-list',
-        }
+        },
       ],
     },
   ]) as any;
@@ -130,7 +147,6 @@
 
   computed(() => {
     userName.value = userStore.user.name;
-    avatarImage.value = `${baseUrl}\${userStore.user.avatar}`;
   })
 
 </script>

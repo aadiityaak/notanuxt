@@ -12,14 +12,18 @@
             <InputText id="alamat" v-model="state.alamat" class="w-full" />
             <label for="alamat">Alamat</label>
         </FloatLabel>
-        <FloatLabel variant="on" class="mb-4">
-            <InputText id="kategori" v-model="state.kategori" class="w-full" />
+        <IftaLabel class="mb-4">
+            <Select id="kategori" v-model="state.kategori" :options="kategori" optionLabel="name" placeholder="Pilih Kategori" class="w-full" />
             <label for="kategori">Kategori</label>
-        </FloatLabel>
-        <FloatLabel variant="on" class="mb-4">
-            <InputText id="pekerjaan" v-model="state.pekerjaan" class="w-full" />
+        </IftaLabel>
+        <IftaLabel class="mb-4" v-if="state.kategori == 'Bank'">
+            <MultiSelect id="bank" v-model="state.bank" :options="bank" optionLabel="name" filter placeholder="Pilih Bank" :maxSelectedLabels="3" class="w-full" />
+            <label for="bank">Bank</label>
+        </IftaLabel>
+        <IftaLabel class="mb-4" v-if="state.kategori == 'Perorangan'">
+            <MultiSelect id="pekerjaan" v-model="state.pekerjaan" :options="pekerjaan" optionLabel="name" filter placeholder="Pilih Pekerjaan" :maxSelectedLabels="3" class="w-full" />
             <label for="pekerjaan">Pekerjaan</label>
-        </FloatLabel>
+        </IftaLabel>
         <FloatLabel variant="on" class="mb-4">
             <InputText id="sertifikat" v-model="state.sertifikat" class="w-full" />
             <label for="sertifikat">Sertifikat</label>
@@ -97,6 +101,7 @@
         name: '',
         phone: '',
         alamat: '',
+        bank: '',
         kategori: '',
         pekerjaan: '',
         sertifikat: '',
@@ -106,7 +111,40 @@
         data_pajak_pembeli: '',
         data_pajak_penjual: '',
     })
-
+    const kategori = [
+        { name: 'Bank' },
+        { name: 'Perorangan' },
+    ];
+    const pekerjaan = [
+        { name: 'Skmht' },
+        { name: 'Apht' },
+        { name: 'Fidusia' },
+        { name: 'Jual beli' },
+        { name: 'Hibah' },
+        { name: 'Turun waris' },
+        { name: 'Aphb' },
+        { name: 'Pendirian PT' },
+        { name: 'Pendirian CV' },
+        { name: 'Pendirian yayasan' },
+        { name: 'Pendirian PT perorangan' },
+        { name: 'Pendirian akta cabang' },
+        { name: 'Perubahan PT' },
+        { name: 'Perub CV' },
+        { name: 'Perub Yayasan' },
+        { name: 'Pecah sertifikat' },
+        { name: 'Pengeringan' },
+        { name: 'PBG' },
+        { name: 'Peningkatan Hak' },
+    ];
+    const bank = [
+        { name: 'BPR BBA' },
+        { name: 'BPR Pala Pusat' },
+        { name: 'BPR Pala Cabang' },
+        { name: 'BPR Danamas Prime' },
+        { name: 'BPR Arum Mandiri' },
+        { name: 'BPRS Madina Mandiri' },
+        { name: 'BMT Sejahtera Ummat' },
+    ];
     onMounted(() => {
         if (data.value) {
             state.value = { ...state.value, ...data.value };
