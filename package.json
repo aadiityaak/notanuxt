@@ -11,10 +11,12 @@
   },
   "dependencies": {
     "@nuxt/icon": "^1.6.1",
+    "@pinia/nuxt": "^0.7.0",
     "@primevue/themes": "^4.1.1",
     "dotenv": "^16.4.5",
     "nuxt": "^3.13.2",
     "nuxt-auth-sanctum": "^0.5.1",
+    "pinia": "^2.2.6",
     "primevue": "^4.1.1",
     "vue": "latest",
     "vue-router": "latest"

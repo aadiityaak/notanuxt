@@ -38,9 +38,11 @@
 </template>
 
 <script setup lang="ts">
+  import { useUserStore } from '~/stores/user';
   const user = ref(useSanctumUser()) as any;
-  const avatarImage = ref('');
-  const userName = ref('');
+  const userStore = useUserStore();
+  const userName = computed(() => userStore.user.name);
+  const avatarImage = computed(() => userStore.user.avatar);
   const route = useRoute();
   const activePage = ref(route.path);
   const expandedKeys = ref({}) as any;
@@ -121,13 +123,5 @@
     
 
   })
-
-  watch(user, (newValue) => {
-    console.log('User changed:', newValue); // Debug log
-    if (newValue) {
-        avatarImage.value = newValue.avatar || '';
-        userName.value = newValue.name || '';
-    }
-}, { immediate: true });
 
 </script>

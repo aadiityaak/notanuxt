@@ -18,7 +18,12 @@ const MyPreset = definePreset(Lara, {
 }
 });
 export default defineNuxtConfig({
-  modules: ['@primevue/nuxt-module', 'nuxt-auth-sanctum', '@nuxt/icon'],
+  modules: [
+    '@primevue/nuxt-module', 
+    'nuxt-auth-sanctum', 
+    '@nuxt/icon',
+    '@pinia/nuxt',
+  ],
   ssr: false,
   primevue: {
     autoImport: true,
