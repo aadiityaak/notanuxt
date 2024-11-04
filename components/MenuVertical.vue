@@ -39,10 +39,21 @@
 
 <script setup lang="ts">
   import { useUserStore } from '~/stores/user';
-  const user = ref(useSanctumUser()) as any;
-  const userStore = useUserStore();
-  const userName = computed(() => userStore.user.name);
-  const avatarImage = computed(() => userStore.user.avatar);
+  const userStore = useUserStore() as any;
+  const user = useSanctumUser() as any;
+  const config = useSanctumConfig();
+  const baseUrl = config.baseUrl + '/storage';
+
+  if (user.value) {
+    userStore.setUser({
+      name: user.value.name,
+      avatar: user.value.avatar,
+    });
+  }
+  const userName = computed(() => userStore.user.name) as any;
+  const avatarImage = computed(() => {
+    return userStore.user.avatar ? `${baseUrl}/${userStore.user.avatar}` : '';
+});
   const route = useRoute();
   const activePage = ref(route.path);
   const expandedKeys = ref({}) as any;
@@ -102,11 +113,6 @@
   ]) as any;
 
   onMounted(() => {
-    if (user.value) {
-      avatarImage.value = user.value.avatar;
-      userName.value = user.value.name;
-    }
-    
     if (activePage.value === '/') {
       expandedKeys.value[0] = true;
     }
@@ -120,8 +126,11 @@
         })
       }
     })
-    
+  })
 
+  computed(() => {
+    userName.value = userStore.user.name;
+    avatarImage.value = `${baseUrl}\${userStore.user.avatar}`;
   })
 
 </script>
