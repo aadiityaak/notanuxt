@@ -1,20 +1,24 @@
 <template>
-    <form @submit.prevent="handleSubmit" ref="form">
+    <Form v-slot="$form" :resolver :validateOnValueUpdate="false" :validateOnBlur="true" :validateOnMount="['firstName']" @submit="handleSubmit" class="flex flex-col gap-4 w-full">
         <IftaLabel class="mb-3">
-            <InputText id="name" v-model="state.name" class="w-full" />
+            <InputText id="name" name="name" v-model="state.name" class="w-full" />
             <label for="name">Nama Lengkap</label>
+            <Message v-if="$form.name?.invalid" severity="error" size="small" variant="simple">{{ $form.name.error.message }}</Message>
         </IftaLabel>
         <IftaLabel class="mb-3">
-            <InputText id="phone" v-model="state.phone" class="w-full" />
+            <InputText id="phone" name="phone" v-model="state.phone" class="w-full" />
             <label for="phone">No. Whatsapp</label>
+            <Message v-if="$form.phone?.invalid" severity="error" size="small" variant="simple">{{ $form.phone.error.message }}</Message>
         </IftaLabel>
         <IftaLabel class="mb-3">
-            <InputText id="alamat" v-model="state.alamat" class="w-full" />
+            <InputText id="alamat" name="alamat" v-model="state.alamat" class="w-full" />
             <label for="alamat">Alamat</label>
+            <Message v-if="$form.alamat?.invalid" severity="error" size="small" variant="simple">{{ $form.alamat.error.message }}</Message>
         </IftaLabel>
         <IftaLabel class="mb-3">
-            <Select id="kategori" v-model="state.kategori" :options="kategori" optionLabel="name" optionValue="name" :aria-label="state.kategori" class="w-full" />
+            <Select id="kategori" name="kategori" v-model="state.kategori" :options="kategori" optionLabel="name" optionValue="name" :aria-label="state.kategori" class="w-full" />
             <label for="kategori">Kategori</label>
+            <Message v-if="$form.kategori?.invalid" severity="error" size="small" variant="simple">{{ $form.kategori.error.message }}</Message>
         </IftaLabel>
         <IftaLabel class="mb-3" v-if="state.kategori === 'Bank'">
             <Select id="bank" v-model="state.bank" :options="bank" optionLabel="name" optionValue="name" class="w-full" />
@@ -25,28 +29,34 @@
             <label for="pekerjaan">Pekerjaan</label>
         </IftaLabel>
         <IftaLabel class="mb-3">
-            <InputText id="sertifikat" v-model="state.sertifikat" class="w-full" />
+            <InputText id="sertifikat" name="sertifikat" v-model="state.sertifikat" class="w-full" />
             <label for="sertifikat">Sertifikat</label>
+            <Message v-if="$form.sertifikat?.invalid" severity="error" size="small" variant="simple">{{ $form.sertifikat.error.message }}</Message>
         </IftaLabel>
         <IftaLabel class="mb-3">
-            <InputNumber mode="currency" currency="IDR" locale="id-ID" id="nilai_transaksi" v-model="state.nilai_transaksi" class="w-full" type="number" />
+            <InputNumber mode="currency" name="nilai_transaksi" currency="IDR" locale="id-ID" id="nilai_transaksi" v-model="state.nilai_transaksi" class="w-full" type="number" />
             <label for="nilai_transaksi">Nilai Transaksi</label>
+            <Message v-if="$form.nilai_transaksi?.invalid" severity="error" size="small" variant="simple">{{ $form.nilai_transaksi.error.message }}</Message>
         </IftaLabel>
         <IftaLabel class="mb-3">
-            <InputNumber mode="currency" currency="IDR" locale="id-ID" id="harga_real" v-model="state.harga_real" class="w-full" type="number" />
+            <InputNumber mode="currency" name="harga_real" currency="IDR" locale="id-ID" id="harga_real" v-model="state.harga_real" class="w-full" type="number" />
             <label for="harga_real">Harga Real</label>
+            <Message v-if="$form.harga_real?.invalid" severity="error" size="small" variant="simple">{{ $form.harga_real.error.message }}</Message>
         </IftaLabel>
         <IftaLabel class="mb-3">
-            <InputNumber mode="currency" currency="IDR" locale="id-ID" id="harga_kesepakatan" v-model="state.harga_kesepakatan" class="w-full" type="number" />
+            <InputNumber mode="currency" name="harga_kesepakatan" currency="IDR" locale="id-ID" id="harga_kesepakatan" v-model="state.harga_kesepakatan" class="w-full" type="number" />
             <label for="harga_kesepakatan">Harga Kesepakatan</label>
+            <Message v-if="$form.harga_kesepakatan?.invalid" severity="error" size="small" variant="simple">{{ $form.harga_kesepakatan.error.message }}</Message>
         </IftaLabel>
         <IftaLabel class="mb-3">
-            <InputNumber mode="currency" currency="IDR" locale="id-ID" id="data_pajak_pembeli" v-model="state.data_pajak_pembeli" class="w-full" type="number" />
+            <InputNumber mode="currency" name="data_pajak_pembeli" currency="IDR" locale="id-ID" id="data_pajak_pembeli" v-model="state.data_pajak_pembeli" class="w-full" type="number" />
             <label for="data_pajak_pembeli">Data Pajak Pembeli</label>
+            <Message v-if="$form.data_pajak_pembeli?.invalid" severity="error" size="small" variant="simple">{{ $form.data_pajak_pembeli.error.message }}</Message>
         </IftaLabel>
         <IftaLabel class="mb-3">
-            <InputNumber mode="currency" currency="IDR" locale="id-ID" id="data_pajak_penjual" v-model="state.data_pajak_penjual" class="w-full" type="number" />
+            <InputNumber mode="currency" name="data_pajak_penjual" currency="IDR" locale="id-ID" id="data_pajak_penjual" v-model="state.data_pajak_penjual" class="w-full" type="number" />
             <label for="data_pajak_penjual">Data Pajak Penjual</label>
+            <Message v-if="$form.data_pajak_penjual?.invalid" severity="error" size="small" variant="simple">{{ $form.data_pajak_penjual.error.message }}</Message>
         </IftaLabel>
         <Toast />
         <div class="flex justify-between">
@@ -76,10 +86,12 @@
                 </template>
             </Dialog>
         </div>
-    </form>
+    </Form>
 </template>
 
 <script setup lang="ts">
+import { Message } from 'primevue';
+
 const router = useRouter()
 const client = useSanctumClient()
 const toast = useToast()
@@ -101,7 +113,43 @@ const state = ref({
     data_pajak_pembeli: '',
     data_pajak_penjual: '',
 })
+const resolver = ({ values }: { values: any }) => {
+    const errors = {} as any;
+    if (!values.name) {
+        errors.name = [{ message: 'Nama Lengkap wajib diisi' }];
+    }
+    if (!values.phone) {
+        errors.phone = [{ message: 'No. whatsapp wajib diisi' }];
+    }
+    if (!values.alamat) {
+        errors.alamat = [{ message: 'Alamat wajib diisi' }];
+    }
+    if (!values.kategori) {
+        errors.kategori = [{ message: 'Pilih salah satu kategori' }];
+    }
+    if (!values.sertifikat) {
+        errors.sertifikat = [{ message: 'Sertifikat wajib diisi' }];
+    }
+    if (!values.nilai_transaksi) {
+        errors.nilai_transaksi = [{ message: 'Nilai Transaksi wajib diisi' }];
+    }
+    if (!values.harga_real) {
+        errors.harga_real = [{ message: 'Harga Real wajib diisi' }];
+    }
+    if (!values.harga_kesepakatan) {
+        errors.harga_kesepakatan = [{ message: 'Harga Kesepakatan wajib diisi' }];
+    }
+    if (!values.data_pajak_pembeli) {
+        errors.data_pajak_pembeli = [{ message: 'Data Pajak Pembih salah satu' }];
+    }
+    if (!values.data_pajak_penjual) {
+        errors.data_pajak_penjual = [{ message: 'Data Pajak Penjual wajib diisi' }];
+    }
 
+    return {
+        errors
+    };
+};
 const kategori = [
     { name: 'Bank' },
     { name: 'Perorangan' },
@@ -137,7 +185,8 @@ const bank = [
     { name: 'BMT Sejahtera Ummat' },
 ]
 
-const handleSubmit = async () => {
+const handleSubmit = async ({ valid }) => {
+    if(!valid) return
     if(newUser) {
         try {
             await client('/api/customers', {
