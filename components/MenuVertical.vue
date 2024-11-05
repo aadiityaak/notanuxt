@@ -76,7 +76,7 @@
        },
         { 
           label: 'Tambah', 
-          to: '/konsumen/add',
+          to: '/konsumen/new',
           icon: 'lucide:user-plus',
         },
       ],

@@ -1,9 +1,19 @@
 <template>
       <div v-if="error" class="error">{{ error }}</div>
-      <DataTable :value="data" size="large">
-        <Column field="name" header="Nama"></Column>
+      <DataTable :value="data">
+        <Column field="name" header="Nama">
+          <template #body="slotProps">
+            <div class="flex items-center">
+              <Avatar shape="circle" >
+                {{ slotProps.data.name.charAt(0) }}
+              </Avatar> 
+              <span class="ml-2">{{ slotProps.data.name }}</span>
+            </div>
+          </template>
+        </Column>
         <Column field="alamat" header="Alamat"></Column>
         <Column field="phone" header="Whatsapp"></Column>
+        <Column field="kategori" header="Kategori"></Column>
         <Column header="" >
           <template #body="slotProps">
               <Button severity="primary" @click="viewKonsumen(slotProps.data)" variant="outlined" size="small">
