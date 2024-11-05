@@ -1,5 +1,5 @@
 <template>
-    <Form v-slot="$form" :resolver :validateOnValueUpdate="false" :validateOnBlur="true" :validateOnMount="['firstName']" @submit="handleSubmit" class="flex flex-col gap-4 w-full">
+    <Form v-slot="$form" ref="form"  :resolver :validateOnValueUpdate="true" :validateOnBlur="true" @submit="handleSubmit" class="flex flex-col gap-4 w-full">
         <IftaLabel class="mb-3">
             <InputText id="name" name="name" v-model="state.name" class="w-full" />
             <label for="name">Nama Lengkap</label>
@@ -113,43 +113,42 @@ const state = ref({
     data_pajak_pembeli: '',
     data_pajak_penjual: '',
 })
-const resolver = ({ values }: { values: any }) => {
+const resolver = () => {
     const errors = {} as any;
-    if (!values.name) {
+    if (!state.value.name) {
         errors.name = [{ message: 'Nama Lengkap wajib diisi' }];
     }
-    if (!values.phone) {
+    if (!state.value.phone) {
         errors.phone = [{ message: 'No. whatsapp wajib diisi' }];
     }
-    if (!values.alamat) {
+    if (!state.value.alamat) {
         errors.alamat = [{ message: 'Alamat wajib diisi' }];
     }
-    if (!values.kategori) {
+    if (!state.value.kategori) {
         errors.kategori = [{ message: 'Pilih salah satu kategori' }];
     }
-    if (!values.sertifikat) {
+    if (!state.value.sertifikat) {
         errors.sertifikat = [{ message: 'Sertifikat wajib diisi' }];
     }
-    if (!values.nilai_transaksi) {
+    if (!state.value.nilai_transaksi) {
         errors.nilai_transaksi = [{ message: 'Nilai Transaksi wajib diisi' }];
     }
-    if (!values.harga_real) {
+    if (!state.value.harga_real) {
         errors.harga_real = [{ message: 'Harga Real wajib diisi' }];
     }
-    if (!values.harga_kesepakatan) {
+    if (!state.value.harga_kesepakatan) {
         errors.harga_kesepakatan = [{ message: 'Harga Kesepakatan wajib diisi' }];
     }
-    if (!values.data_pajak_pembeli) {
-        errors.data_pajak_pembeli = [{ message: 'Data Pajak Pembih salah satu' }];
+    if (!state.value.data_pajak_pembeli) {
+        errors.data_pajak_pembeli = [{ message: 'Data Pajak Pembeli wajib diisi' }];
     }
-    if (!values.data_pajak_penjual) {
+    if (!state.value.data_pajak_penjual) {
         errors.data_pajak_penjual = [{ message: 'Data Pajak Penjual wajib diisi' }];
     }
 
-    return {
-        errors
-    };
-};
+    return { errors };
+}
+
 const kategori = [
     { name: 'Bank' },
     { name: 'Perorangan' },
@@ -205,6 +204,7 @@ const handleSubmit = async ({ valid }) => {
                 body: state.value
             })
             toast.add({ severity: 'success', summary: 'Success', detail: 'Update konsumen berhasil!', life: 3000 })
+            navigateTo('/konsumen')
         } catch (error) {
             toast.add({ severity: 'error', summary: 'Error', detail: 'Update konsumen gagal!', life: 3000 })
         }
