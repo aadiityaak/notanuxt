@@ -90,15 +90,16 @@
 </template>
 
 <script setup lang="ts">
-import { Message } from 'primevue';
 
 const router = useRouter()
 const client = useSanctumClient()
 const toast = useToast()
 const idUser = useRoute().params.id
 const newUser = idUser == 'new'
-const data = ref({})
 const visible = ref(false)
+definePageMeta({
+    title: 'Kelola Konsumen'
+})
 const state = ref({
     name: '',
     phone: '',
@@ -208,7 +209,6 @@ const handleSubmit = async ({ valid }) => {
         } catch (error) {
             toast.add({ severity: 'error', summary: 'Error', detail: 'Update konsumen gagal!', life: 3000 })
         }
-        
     }
 }
 
