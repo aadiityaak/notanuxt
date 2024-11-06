@@ -3,19 +3,37 @@ import { definePreset } from '@primevue/themes';
 const MyPreset = definePreset(Lara, {
   semantic: {
     primary: {
-        50: '{slate.50}',
-        100: '{slate.100}',
-        200: '{slate.200}',
-        300: '{slate.300}',
-        400: '{slate.400}',
-        500: '{slate.500}',
-        600: '{slate.600}',
-        700: '{slate.700}',
-        800: '{slate.800}',
-        900: '{slate.900}',
-        950: '{slate.950}'
+        50: '{rose.50}',
+        100: '{rose.100}',
+        200: '{rose.200}',
+        300: '{rose.300}',
+        400: '{rose.400}',
+        500: '{rose.500}',
+        600: '{rose.600}',
+        700: '{rose.700}',
+        800: '{rose.800}',
+        900: '{rose.900}',
+        950: '{rose.950}'
+    },
+    colorScheme: {
+        light: {
+            primary: {
+                color: '{rose.950}',
+                inverseColor: '#ffffff',
+                hoverColor: '{rose.900}',
+                activeColor: '{rose.800}'
+            }
+        },
+        dark: {
+            primary: {
+                color: '{rose.50}',
+                inverseColor: '{rose.950}',
+                hoverColor: '{rose.100}',
+                activeColor: '{rose.200}'
+            },
+        }
     }
-}
+  }
 });
 export default defineNuxtConfig({
   modules: [
@@ -33,7 +51,7 @@ export default defineNuxtConfig({
       theme: {
         preset: MyPreset,
         options: {
-          darkModeSelector: false ,
+          darkModeSelector: '.dark',
         }
       },
     }

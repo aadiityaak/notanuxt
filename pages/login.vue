@@ -7,20 +7,24 @@
   <Message severity="error" class="mb-4 max-w-[400px] w-full mx-auto" v-if="loginError">
     {{ loginError }}
   </Message>
-  <form @submit.prevent="handleLogin" ref="form" class="max-w-[400px] w-full mx-auto rounded-lg border border-surface-200 bg-surface-50 dark:border-surface-700 dark:bg-surface-800 p-4" >
-      <FloatLabel variant="on" class="mb-4">
-          <InputText id="email" v-model="credentials.email" class="w-full" />
+  <form @submit.prevent="handleLogin" ref="form" class="max-w-[400px] w-full mx-auto rounded-lg border 
+  border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-gray-900 p-4
+  flex justify-center flex-col gap-4 w-full" >
+      <h1 class="text-2xl font-bold">Login</h1>
+      <IftaLabel>
+          <InputText id="email" v-model="credentials.email" class="w-full" type="email" variant="filled"/>
           <label for="email">Email</label>
-      </FloatLabel>
-      <FloatLabel variant="on" class="mb-4">
-          <InputText type="password" id="password" v-model="credentials.password" class="w-full" />
+      </IftaLabel>
+      <IftaLabel>
+          <InputText type="password" id="password" v-model="credentials.password" class="w-full" variant="filled" />
           <label for="password">Password</label>
-      </FloatLabel>
-      <Button label="Login" type="submit" ><Icon name="lucide:log-in"/> Login</Button>
-
-      <div class="flex justify-between mt-4">
-        <NuxtLink to="/register" class="text-sm text-surface-900 dark:text-surface-300">Belum punya akun? Daftar</NuxtLink>
-        <NuxtLink to="/forgot-password" class="text-sm text-surface-900 dark:text-surface-300">Lupa Password?</NuxtLink>
+      </IftaLabel>
+      <div>
+        <Button label="Login" type="submit" ><Icon name="lucide:log-in"/> Login</Button>
+      </div>
+      <div class="flex justify-between">
+        <NuxtLink to="/register" class="text-sm text-gray-900 dark:text-gray-300">Belum punya akun? Daftar</NuxtLink>
+        <NuxtLink to="/forgot-password" class="text-sm text-gray-900 dark:text-gray-300">Lupa Password?</NuxtLink>
       </div>
   </form>
 </template>
