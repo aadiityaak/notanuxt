@@ -1,22 +1,21 @@
 <template>
-    <Card class="w-full mb-4">
-        <template #content>
-            <div class="flex justify-between justify-center">
-                <div class="w-1/2">
-                    <p><Avatar shape="circle" >{{ state.customer.name.charAt(0) }} </Avatar> {{ state.customer.name }}</p>
-                </div>
 
-                <div class="w-1/2 text-right">
-                    <p>{{ state.customer.alamat }}</p>
-                    <p>{{ state.customer.phone }}</p>
-                </div>
-            </div>
-        </template>
-    </Card>
+    <div class="flex justify-between justify-center mb-4 bg-slate-50 dark:bg-slate-800 p-4 border border-slate-200 dark:border-slate-700 rounded-md">
+        <div>
+            <Avatar shape="circle" >{{ state.customer.name.charAt(0) }} </Avatar>
+        </div>
+        <div class="grow text-left ml-2 ">
+            <p>
+                <b>{{ state.customer.name }}</b><br/>
+                {{ state.customer.alamat }} <br/>
+                {{ state.customer.phone }}
+            </p>
+        </div>
+    </div>
 
-    <Form @submit.prevent="handleSubmit" ref="form" class="flex flex-col gap-4 w-full">
+    <Form @submit="handleSubmit" ref="form" class="flex flex-col gap-4 w-full">
         <IftaLabel >
-            <DatePicker id="order_date" name="order_date" v-model="state.order_date" class="w-full" variant="filled"/>
+            <DatePicker id="order_date" name="order_date" v-model="state.order_date" class="w-full" variant="filled" dateFormat="d MM yy" />
             <label for="order_date">Tanggal Order</label>
         </IftaLabel>
         <IftaLabel >
@@ -40,6 +39,7 @@
             <label for="document">Dokumen</label>
         </IftaLabel>
         <div>
+            <Toast />
             <Button label="Update" type="submit"><Icon name="lucide:user-plus"/> Simpan</Button>
         </div>
     </Form>
@@ -73,20 +73,23 @@
         { name: 'SERTIFIKAT' },
     ])
     const client = useSanctumClient()
-    const karyawan = ref([])
+    
     const idOrder = useRoute().params.id
-    const message = ref('')
+    const toast = useToast()
 
     const handleSubmit = async () => {
         await client(`/api/orders/${idOrder}`, {
             method: 'PUT',
             body: state.value
         })
-        message.value = 'Update Success'
+        toast.add({ severity: 'success', summary: 'Success', detail: 'Update order berhasil!', life: 3000 })
     }
 
     onMounted(async () => {
         const response = await client(`/api/orders/${idOrder}`)
+        // ganti format order_date
+        const date = new Date(response.order_date)
+        response.order_date = `${date.getDate()} ${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`
         state.value = { ...state.value, ...response }
         if (typeof state.value.document === 'string') {
             try {
