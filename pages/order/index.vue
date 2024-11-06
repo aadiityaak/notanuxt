@@ -1,6 +1,6 @@
 <template>
     <div v-if="error" class="error">{{ error }}</div>
-    <DataTable :value="data">
+    <DataTable :value="data.data">
       <Column field="customer.name" header="Konsumen"></Column>
       <Column header="Tanggal Order">
         <template #body="slotProps">
@@ -21,15 +21,27 @@
         </template>
       </Column>
     </DataTable>
+    <Paginator
+      :rows="data.per_page"
+      :totalRecords="data.total"
+      :page="page - 1"
+      @page="onPageChange"
+      aria-label="page"
+    >
+      <template #start="slotProps">
+        Halaman {{ slotProps.state.page + 1 }} Menampilkan {{ slotProps.state.first }} - {{ slotProps.state.rows + slotProps.state.page * slotProps.state.rows }} Data
+      </template>
+    </Paginator>
 </template>
 
 <script lang="ts" setup>
+  const page = ref(1)
   definePageMeta({
     title: 'List Order',
   })
   const client = useSanctumClient();
-  const { data, error } = await useAsyncData('orders', () =>
-      client('/api/orders')
+  const { data, error, refresh } = await useAsyncData('orders', () =>
+      client(`/api/orders/?page=${page.value}`)
   )
   const viewOrder = (order: any) => {
     navigateTo(`/order/${order.id}`)
@@ -43,4 +55,11 @@
     };
     return new Date(date).toLocaleDateString('id-ID', options);
   };
+  const onPageChange = (event: { page: number, first: number, rows: number, pageCount: number }) => {
+    page.value = event.page + 1; 
+  };
+
+  watch(page, (newPage) => {
+    refresh();
+  });
 </script>
