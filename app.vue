@@ -9,3 +9,9 @@
   const { isAuthenticated } = useSanctumAuth();
   const layoutCondition = computed(() => (isAuthenticated.value ? 'dashboard' : 'default'));
 </script>
+
+<style>
+html.dark {
+  color: #cfcfcf;
+}
+</style>

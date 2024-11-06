@@ -17,7 +17,7 @@
         <Column header="" >
           <template #body="slotProps">
               <Button severity="primary" @click="viewKonsumen(slotProps.data)" variant="outlined" size="small">
-                <Icon name="lucide:eye" />
+                <Icon name="lucide:eye" class="text-rose-700" />
               </Button>
           </template>
         </Column>

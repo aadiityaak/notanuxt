@@ -1,7 +1,7 @@
 <template>
   <div class="menu-vertical">
     <div class="flex flex-col w-[300px] mt-4 mb-4 ms-4 h-[calc(100vh-2rem)] 
-    border-0 rounded-lg bg-gray-50 dark:bg-gray-900 sticky top-4">
+    border-0 rounded-lg bg-zinc-50 dark:bg-zinc-900 sticky top-4">
       <div class="flex items-center justify-between px-6 pt-4 shrink-0">
         <span class="inline-flex items-center gap-2">
           <span class="font-semibold text-2xl text-primary">Menu</span>
@@ -16,7 +16,7 @@
         }"
         >
             <template #item="{ item }">
-                <NuxtLink :to="item.to" v-ripple class="flex items-center px-4 py-2 cursor-pointer group !hover:bg-gray-100 dark:!hover:bg-gray-700" :class="{ 'bg-gray-100 dark:bg-gray-800 rounded': item.to === activePage }">
+                <NuxtLink :to="item.to" v-ripple class="flex items-center px-4 py-2 cursor-pointer group !hover:bg-zinc-100 dark:!hover:bg-zinc-700" :class="{ 'bg-zinc-100 dark:bg-zinc-800 rounded': item.to === activePage }">
                     <Icon v-if="item.icon" :name="item.icon" class="mr-2" />
                     <span class="font-medium">{{ item.label }}</span>
                     <Badge v-if="item.badge" class="ml-auto mr-2" :value="item.badge" />
@@ -93,8 +93,8 @@
           icon: 'lucide:list',
         },
         { 
-          label: 'Add Order', 
-          to: '/order/add',
+          label: 'Tambah', 
+          to: '/order/new',
           icon: 'lucide:plus',
         },
       ],

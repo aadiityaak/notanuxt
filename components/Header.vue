@@ -1,12 +1,12 @@
 <template>
-  <header class="header p-4 rounded-lg border-0 bg-gray-50 dark:bg-gray-900">
-    <div class="flex justify-between items-center max-w-[1200px] mx-auto">
+  <header class="header p-4 rounded-lg border-0 bg-zinc-50 dark:bg-zinc-900">
+    <div class="flex justify-between items-center mx-auto">
       <NuxtLink v-if="isAuthenticated" to="/dashboard"><Icon name="lucide:house"/></NuxtLink>
       <h1 v-else class="text-2xl font-bold text-sm">App</h1>
       <div>
         <span @click="toggleDarkMode()" class="cursor-pointer">
             <Icon v-if="dark" name="lucide:sun" class="text-amber-400" />
-            <Icon v-else name="lucide:moon" class="text-gray-700"/>
+            <Icon v-else name="lucide:moon" class="text-zinc-700"/>
         </span>
         <span v-if="isAuthenticated" class="ml-4 cursor-pointer" @click="logout">
           <Icon name="lucide:log-out"/>

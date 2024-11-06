@@ -113,7 +113,7 @@ const state = ref({
     harga_kesepakatan: '',
     data_pajak_pembeli: '',
     data_pajak_penjual: '',
-})
+} as any)
 const resolver = () => {
     const errors = {} as any;
     if (!state.value.name) {
@@ -189,12 +189,12 @@ const handleSubmit = async ({ valid }) => {
     if(!valid) return
     if(newUser) {
         try {
-            await client('/api/customers', {
+            const response = await client('/api/customers', {
                 method: 'POST',
                 body: state.value
             })
             toast.add({ severity: 'success', summary: 'Success', detail: 'Tambah konsumen berhasil!', life: 3000 })
-            navigateTo('/konsumen')
+            navigateTo(`/order/new?customer=${response.id}`)
         } catch (error) {
             toast.add({ severity: 'error', summary: 'Error', detail: 'Tambah konsumen gagal!', life: 3000 })
         }
