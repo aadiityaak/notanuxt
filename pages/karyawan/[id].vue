@@ -35,6 +35,7 @@
         { name: 'Karyawan' },
         { name: 'Owner' },
         { name: 'Keuangan' },
+        { name: 'Supervisor' },
     ]
     const state = ref({
         name: '',

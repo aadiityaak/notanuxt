@@ -1,6 +1,7 @@
 <template>
   <div>
-    <Avatar :image="storageUrl + '/' + userStore.user.avatar" shape="circle" size="xlarge" class="mb-4" />
+    <Avatar :image="storageUrl + '/' + userStore.user.avatar" shape="circle" size="xlarge" v-if="userStore.user && userStore.user.avatar !== null" class="mb-4" />
+    <Avatar shape="circle" size="xlarge" v-else class="mb-4" > {{ userStore.user.name.charAt(0) }} </Avatar>
     <!-- <form @submit="handleUpdate" ref="form" enctype="multipart/form-data"> -->
       <Form v-slot="$form" ref="form"  :resolver :validateOnValueUpdate="true" :validateOnBlur="true" @submit="handleUpdate" class="flex flex-col gap-4 w-full" enctype="multipart/form-data">
       <IftaLabel variant="on">
@@ -17,6 +18,7 @@
         <InputText type="file" id="avatar" @change="onFileUpload" class="w-full" />
         <label for="avatar">Avatar</label>
       </IftaLabel>
+
       <Toast />
       <div>
         <Button label="Update" type="submit"><Icon name="lucide:user-plus" /> Update Profile</Button>
@@ -51,8 +53,6 @@ const resolver = () => {
     if (!state.value.email) {
         errors.email = [{ message: 'Email wajib diisi' }];
     }
-
-
     return { errors };
 }
 

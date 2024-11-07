@@ -30,68 +30,34 @@
           severity="primary"
           variant="outlined" 
           size="small" 
-          @click="showDialog(slotProps.data.id)" >
+          @click="showDialog(slotProps.data)" >
             <Icon name="lucide:eye" class="text-rose-700" />
           </Button>
+          <Button 
+          class="ml-2"
+          severity="primary"
+          variant="outlined"
+          size="small"
+          @click="deleteKonsumen(slotProps.data.id)">
+            <Icon name="lucide:trash" class="text-rose-700" />
+          </Button>
         </div>
-        <Dialog v-model:visible="visible[slotProps.data.id]" modal header="Header">
-          <template #header>
-            <h3 class="text-xl font-bold">
-              <Avatar shape="circle" >{{ slotProps.data.name.charAt(0) }} </Avatar>
-              {{ slotProps.data.name }}
-            </h3>
-          </template>
-          <div class="w-full">
-            <div class="flex justify-between py-2 border-b border-zinc-200 dark:border-zinc-800">
-              <div class="font-bold">Whatsapp</div>
-              <div class="text-right">{{ slotProps.data.phone }}</div>
-            </div>
-            <div class="flex justify-between py-2 border-b border-zinc-200 dark:border-zinc-800">
-              <div class="font-bold">Alamat</div>
-              <div class="text-right">{{ slotProps.data.alamat }}</div>
-            </div>
-            <div class="flex justify-between py-2 border-b border-zinc-200 dark:border-zinc-800">
-              <div class="font-bold">Kategori</div>
-              <div class="text-right">{{ slotProps.data.kategori }}</div>
-            </div>
-            <div class="flex justify-between py-2 border-b border-zinc-200 dark:border-zinc-800" v-if="slotProps.data.kategori === 'Perorangan'">
-              <div class="font-bold">Pekerjaan</div>
-              <div class="text-right">{{ slotProps.data.pekerjaan }}</div>
-            </div>
-            <div class="flex justify-between py-2 border-b border-zinc-200 dark:border-zinc-800" v-if="slotProps.data.kategori === 'Bank'">
-              <div class="font-bold">Bank</div>
-              <div class="text-right">{{ slotProps.data.bank }}</div>
-            </div>
-            <div class="flex justify-between py-2 border-b border-zinc-200 dark:border-zinc-800">
-              <div class="font-bold">Sertifikat</div>
-              <div class="text-right">{{ slotProps.data.sertifikat }}</div>
-            </div>
-            <div class="flex justify-between py-2 border-b border-zinc-200 dark:border-zinc-800">
-              <div class="font-bold">Nilai Transaksi</div>
-              <div class="text-right">{{ formatRupiah(slotProps.data.nilai_transaksi) }}</div>
-            </div>
-            <div class="flex justify-between py-2 border-b border-zinc-200 dark:border-zinc-800">
-              <div class="font-bold">Harga Real</div>
-              <div class="text-right">{{ formatRupiah(slotProps.data.harga_real) }}</div>
-            </div>
-            <div class="flex justify-between py-2 border-b border-zinc-200 dark:border-zinc-800">
-              <div class="font-bold">Harga Kesepakatan</div>
-              <div class="text-right">{{ formatRupiah(slotProps.data.harga_kesepakatan) }}</div>
-            </div>
-            <div class="flex justify-between py-2 border-b border-zinc-200 dark:border-zinc-800">
-              <div class="font-bold">Data Pajak Pembeli</div>
-              <div class="text-right">{{ formatRupiah(slotProps.data.data_pajak_pembeli) }}</div>
-            </div>
-            <div class="flex justify-between py-2">
-              <div class="font-bold">Data Pajak Penjual</div>
-              <div class="text-right">{{ formatRupiah(slotProps.data.data_pajak_penjual) }}</div>
-            </div>
-          </div>
-        </Dialog>
       </template>
     </Column>
   </DataTable>
   <div v-else class="text-center">Tidak ada konsumen</div>
+  <DynamicDialog />
+  <ConfirmPopup>
+    <template #container="{ message, acceptCallback, rejectCallback }" class="!shadow-0">
+      <div class="rounded p-4">
+        <span>{{ message.message }}</span>
+        <div class="flex items-center gap-2 mt-4">
+            <Button label="Hapus" @click="acceptCallback" size="small"></Button>
+            <Button label="Batal" outlined @click="rejectCallback" severity="secondary" size="small" text></Button>
+        </div>
+    </div>
+  </template>
+  </ConfirmPopup>
   <Paginator
     :rows="data.per_page"
     :totalRecords="data.total"
@@ -112,31 +78,60 @@
 </template>
 
 <script lang="ts" setup>
-const route = useRoute();
-const visible = ref({} as any);
+const route = useRoute()
+const dialog = useDialog()
+const confirm = useConfirm()
+const DetailKonsumen = defineAsyncComponent(() => import('~/components/DetailKonsumen.vue'))
 const page = ref(route.query.page ? Number(route.query.page) : 1);
-const client = useSanctumClient();
-
+const client = useSanctumClient()
 definePageMeta({
   title: 'List Konsumen',
-});
-
+})
 const { data, error, refresh } = await useAsyncData('customers', () =>
   client(`/api/customers?page=${page.value}`)
-);
-
+)
 const viewKonsumen = (konsumen: any) => {
   navigateTo(`/konsumen/${konsumen.id}`);
-};
+}
+const deleteKonsumen = async (id: number) => {
+  confirm.require({
+    message: 'Apakah Anda yakin ingin menghapus konsumen ini?',
+    header: 'Konfirmasi',
+    icon: 'lucide:alert-triangle',
+    rejectProps: {
+      label: 'Batal',
+      severity: 'secondary',
+      outlined: true
+    },
+    acceptProps: {
+        label: 'Hapus'
+    },
+    accept: async () => {
+      await client(`/api/customers/${id}`, {
+        method: 'DELETE',
+      });
+      refresh();
+    },
+  })
+}
 
 const onPageChange = (event: { page: number, first: number, rows: number, pageCount: number }) => {
   page.value = event.page + 1; 
   navigateTo(`/konsumen?page=${page.value}`);
-};
+}
 
-const showDialog = (id: number) => {
-  visible.value[id] = !visible.value[id];
-};
+const showDialog = (konsumen: any) => {
+  dialog.open(DetailKonsumen, {
+      data: konsumen,
+      props: {
+          header: `${konsumen.name}`,
+          dismissableMask: true,
+          dismissable: true,
+          class: 'w-full max-w-[500px]',
+          modal: true
+      } as any,
+  });
+}
 
 onMounted(() => {
   page.value = route.query.page ? Number(route.query.page) : 1
@@ -149,5 +144,5 @@ const formatRupiah = (value: number) => {
 }
 watch(page, (newPage) => {
   refresh();
-});
+})
 </script>
