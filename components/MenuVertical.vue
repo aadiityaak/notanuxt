@@ -110,8 +110,8 @@
           icon: 'lucide:users',
         },
         { 
-          label: 'Add', 
-          to: '/karyawan/add',
+          label: 'Tambah', 
+          to: '/karyawan/new',
           icon: 'lucide:user-plus',
         },
       ],
