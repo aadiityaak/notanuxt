@@ -27,6 +27,13 @@
       :page="page - 1"
       @page="onPageChange"
       aria-label="page"
+      :pt="{
+      root: (event) => {
+        const itemForPage =  data.per_page;
+        const currentPage =  page - 1;
+        event.state.d_first = itemForPage * currentPage;
+      },
+    }"
     >
       <template #start="slotProps">
         Halaman {{ slotProps.state.page + 1 }} Menampilkan {{ slotProps.state.first }} - {{ slotProps.state.rows + slotProps.state.page * slotProps.state.rows }} Data
@@ -35,13 +42,14 @@
 </template>
 
 <script lang="ts" setup>
-  const page = ref(1)
+  const route = useRoute()
+  const page = ref(route.query.page ? Number(route.query.page) : 1);
   definePageMeta({
     title: 'List Order',
   })
   const client = useSanctumClient();
   const { data, error, refresh } = await useAsyncData('orders', () =>
-      client(`/api/orders/?page=${page.value}`)
+    client(`/api/orders/?page=${page.value}`)
   )
   const viewOrder = (order: any) => {
     navigateTo(`/order/${order.id}`)
@@ -49,14 +57,15 @@
   const formatPrice = (price: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(price)
   const formatDate = (date: string): string => {
     const options: Intl.DateTimeFormatOptions = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
     };
     return new Date(date).toLocaleDateString('id-ID', options);
   };
   const onPageChange = (event: { page: number, first: number, rows: number, pageCount: number }) => {
     page.value = event.page + 1; 
+    navigateTo(`/order?page=${page.value}`);
   };
 
   watch(page, (newPage) => {

@@ -1,6 +1,6 @@
 <template>
 
-    <div class="flex justify-between justify-center mb-4 bg-slate-50 dark:bg-slate-800 p-4 border border-slate-200 dark:border-slate-700 rounded-md">
+    <div v-if="!newOrder" class="flex justify-between justify-center mb-4 bg-slate-50 dark:bg-slate-800 p-4 border border-slate-200 dark:border-slate-700 rounded-md">
         <div>
             <Avatar shape="circle" >{{ state.customer.name.charAt(0) }} </Avatar>
         </div>
@@ -46,6 +46,12 @@
 </template>
 
 <script setup lang="ts">
+    const idOrder = useRoute().params.id
+    const toast = useToast()
+    const newOrder = idOrder == 'new'
+    definePageMeta({
+        title: 'Kelola Order',
+    })
     const state = ref({
         order_date: '',
         service: '',
@@ -73,9 +79,6 @@
         { name: 'SERTIFIKAT' },
     ])
     const client = useSanctumClient()
-    
-    const idOrder = useRoute().params.id
-    const toast = useToast()
 
     const handleSubmit = async () => {
         await client(`/api/orders/${idOrder}`, {
@@ -86,24 +89,23 @@
     }
 
     onMounted(async () => {
-        const response = await client(`/api/orders/${idOrder}`)
-        // ganti format order_date
-        const date = new Date(response.order_date)
-        response.order_date = `${date.getDate()} ${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`
-        state.value = { ...state.value, ...response }
-        if (typeof state.value.document === 'string') {
-            try {
-                state.value.document = JSON.parse(state.value.document);
-            } catch (error) {
-                state.value.document = state.value.document.split(',');
+        if(!newOrder) {
+            const response = await client(`/api/orders/${idOrder}`)
+            // ganti format order_date
+            const date = new Date(response.order_date)
+            response.order_date = `${date.getDate()} ${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`
+            state.value = { ...state.value, ...response }
+            if (typeof state.value.document === 'string') {
+                try {
+                    state.value.document = JSON.parse(state.value.document);
+                } catch (error) {
+                    state.value.document = state.value.document.split(',');
+                }
+            } else if (!Array.isArray(state.value.document)) {
+                state.value.document = [];
             }
-        } else if (!Array.isArray(state.value.document)) {
-            state.value.document = [];
         }
-    })
 
-    definePageMeta({
-        title: 'Kelola Order',
     })
 
 </script>
