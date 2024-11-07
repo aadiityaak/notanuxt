@@ -16,7 +16,7 @@
     <Column field="kategori" header="Kategori"></Column>
     <Column header="">
       <template #body="slotProps">
-        <div class="flex">
+        <div class="flex justify-end">
           <Button
             severity="primary"
             @click="viewKonsumen(slotProps.data)"

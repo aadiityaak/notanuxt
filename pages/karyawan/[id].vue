@@ -20,15 +20,31 @@
             <InputText name="email" id="email" v-model="state.email" class="w-full" variant="filled"/>
             <label for="email">Email</label>
         </IftaLabel>
-        <div>
-            <Toast />
-            <Button label="Update" type="submit"><Icon name="lucide:user-plus"/> Update Data Karyawan</Button>
+        <div class="flex justify-between">
+            <div>
+                <Button label="Back" variant="outlined" size="small" severity="primary"><Icon name="lucide:arrow-left" class="text-rose-700"/> Back</Button>
+                <Button label="Update" type="submit" variant="outlined" size="small" severity="primary" class="ml-2"><Icon name="lucide:save" class="text-rose-700"/> Save</Button>
+            </div>
+            <Button label="Delete" variant="outlined" size="small" severity="danger" @click="deleteUser(state.id)"><Icon name="lucide:trash" class="text-rose-700"/> Delete</Button>
         </div>
+        <Toast />
+        <ConfirmPopup>
+            <template #container="{ message, acceptCallback, rejectCallback }" class="!shadow-0">
+                <div class="rounded p-4">
+                    <span>{{ message.message }}</span>
+                    <div class="flex items-center gap-2 mt-4">
+                        <Button label="Hapus" @click="acceptCallback" size="small"></Button>
+                        <Button label="Batal" outlined @click="rejectCallback" severity="secondary" size="small" text></Button>
+                    </div>
+                </div>
+            </template>
+        </ConfirmPopup>
     </form>
 </template>
 
 <script setup lang="ts">
     const toast = useToast()
+    const confirm = useConfirm()
     const jabatan = [
         { name: 'Manager' },
         { name: 'Staff' },
@@ -43,11 +59,10 @@
         address: '',
         position: '',
         email: '',
-    })
+    } as any)
     const client = useSanctumClient()
     const idUser = useRoute().params.id
     const message = ref('')
-
     const handleSubmit = async () => {
         try {
             const response = await client(`/api/karyawans/${idUser}`, {
@@ -65,12 +80,33 @@
             toast.add({ severity: 'error', summary: 'Error', detail: message, life: 3000 })
         }
     }
-
+    const deleteUser = async (id: string) => {
+        confirm.require({
+            message: 'Apakah Anda yakin ingin menghapus karyawan ini?',
+            header: 'Konfirmasi',
+            icon: 'pi pi-exclamation-triangle',
+            accept: async () => {
+                try {
+                    await client(`/api/karyawans/${id}`, {
+                        method: 'DELETE',
+                    })
+                    toast.add({ severity: 'success', summary: 'Success', detail: 'Hapus karyawan berhasil!', life: 3000 })
+                    navigateTo('/karyawan')
+                } catch (error : any) {
+                    if (error.response.status === 403) {
+                        message.value = 'Anda tidak memiliki akses untuk menghapus data karyawan ini.'
+                    } else {
+                        message.value = 'Terjadi kesalahan.'
+                    }
+                    toast.add({ severity: 'error', summary: 'Error', detail: message, life: 3000 })
+                }
+            }
+        })
+    }
     onMounted(async () => {
         const response = await client(`/api/karyawans/${idUser}`)
         state.value = response
     })
-
     definePageMeta({
         title: 'Edit Data Karyawan',
     })

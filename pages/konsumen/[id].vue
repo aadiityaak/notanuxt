@@ -59,32 +59,29 @@
             <Message v-if="$form.data_pajak_penjual?.invalid" severity="error" size="small" variant="simple">{{ $form.data_pajak_penjual.error.message }}</Message>
         </IftaLabel>
         <Toast />
+        <ConfirmPopup>
+            <template #container="{ message, acceptCallback, rejectCallback }" class="!shadow-0">
+                <div class="rounded p-4">
+                    <span>{{ message.message }}</span>
+                    <div class="flex items-center gap-2 mt-4">
+                        <Button label="Hapus" @click="acceptCallback" size="small"></Button>
+                        <Button label="Batal" outlined @click="rejectCallback" severity="secondary" size="small" text></Button>
+                    </div>
+                </div>
+            </template>
+        </ConfirmPopup>
         <div class="flex justify-between">
             <div>
-                <Button label="Back" size="small" type="button" @click="router.back()">
-                    <Icon name="lucide:arrow-left" /> Back
+                <Button label="Back" size="small" type="button" variant="outlined" severity="primary" @click="router.back()">
+                    <Icon name="lucide:arrow-left" class="text-rose-700" /> Back
                 </Button>
-                <Button label="Save" size="small" type="submit" severity="info" class="ml-4">
-                    <Icon name="lucide:user-plus"/> {{ newUser ? 'Tambah Konsumen' : 'Update Konsumen' }}
+                <Button label="Save" size="small" type="submit" variant="outlined" severity="primary" class="ml-2">
+                    <Icon name="lucide:user-plus" class="text-rose-700"/> {{ newUser ? 'Tambah Konsumen' : 'Update Konsumen' }}
                 </Button>
             </div>
-            <Button v-if="newUser === false" label="Delete" size="small" severity="danger" type="button" @click="visible = true">
-                <Icon name="lucide:trash" /> Delete
+            <Button label="Delete" size="small" variant="outlined" severity="primary" @click="deleteKonsumen(state.id)">
+                <Icon name="lucide:trash" variant="outline" class="text-rose-700" /> Delete
             </Button>
-            <Dialog v-model:visible="visible" modal class="w-full max-w-xl">
-                <template #header>
-                    <h3 class="text-xl font-bold"><Icon name="lucide:trash" /> Hapus Konsumen</h3>
-                </template>
-                <p>Yakin ingin menghapus user <em><b>{{ state.name }}</b>?</em></p>
-                <template #footer>
-                    <Button size ="small" severity="secondary" @click="visible = false"> 
-                        <Icon name="lucide:x" /> Batal
-                    </Button>
-                    <Button label="Ya" size ="small" severity="danger" @click="handleDelete">
-                        <Icon name="lucide:trash" /> Ya
-                    </Button>
-                </template>
-            </Dialog>
         </div>
     </Form>
 </template>
@@ -94,9 +91,9 @@
 const router = useRouter()
 const client = useSanctumClient()
 const toast = useToast()
+const confirm = useConfirm()
 const idUser = useRoute().params.id
 const newUser = idUser == 'new'
-const visible = ref(false)
 definePageMeta({
     title: 'Kelola Konsumen'
 })
@@ -212,11 +209,26 @@ const handleSubmit = async ({ valid }) => {
     }
 }
 
-const handleDelete = async () => {
-    await client(`/api/customers/${idUser}`, {
-        method: 'DELETE'
-    })
-    router.back()
+const deleteKonsumen = async (id: number) => {
+  confirm.require({
+    message: 'Apakah Anda yakin ingin menghapus konsumen ini?',
+    header: 'Konfirmasi',
+    icon: 'lucide:alert-triangle',
+    rejectProps: {
+      label: 'Batal',
+      severity: 'secondary',
+      outlined: true
+    },
+    acceptProps: {
+        label: 'Hapus'
+    },
+    accept: async () => {
+      await client(`/api/customers/${id}`, {
+        method: 'DELETE',
+      });
+      router.back();
+    },
+  })
 }
 
 onMounted(async () => {

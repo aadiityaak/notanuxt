@@ -11,39 +11,39 @@
       <div class="font-bold">Phone</div>
       <div class="text-right">{{ params.phone }}</div>
   </div>
-  <div class="flex justify-between py-2">
+  <div class="flex justify-between border-b border-zinc-200 dark:border-zinc-800 py-3">
       <div class="font-bold">Kategori</div>
       <div class="text-right">{{ params.kategori }}</div>
   </div>
-  <div class="flex justify-between py-2">
+  <div class="flex justify-between border-b border-zinc-200 dark:border-zinc-800 py-3">
       <div class="font-bold">Pekerjaan</div>
       <div class="text-right">{{ params.pekerjaan }}</div>
   </div>
-  <div class="flex justify-between py-2">
+  <div class="flex justify-between border-b border-zinc-200 dark:border-zinc-800 py-3">
       <div class="font-bold">Bank</div>
       <div class="text-right">{{ params.bank }}</div>
   </div>
-  <div class="flex justify-between py-2">
+  <div class="flex justify-between border-b border-zinc-200 dark:border-zinc-800 py-3">
       <div class="font-bold">Sertifikat</div>
       <div class="text-right">{{ params.sertifikat }}</div>
   </div>
-  <div class="flex justify-between py-2">
+  <div class="flex justify-between border-b border-zinc-200 dark:border-zinc-800 py-3">
       <div class="font-bold">Nilai Transaksi</div>
       <div class="text-right">{{ formatRupiah(params.nilai_transaksi) }}</div>
   </div>
-  <div class="flex justify-between py-2">
+  <div class="flex justify-between border-b border-zinc-200 dark:border-zinc-800 py-3">
       <div class="font-bold">Harga Real</div>
       <div class="text-right">{{ formatRupiah(params.harga_real) }}</div>
   </div>
-  <div class="flex justify-between py-2">
+  <div class="flex justify-between border-b border-zinc-200 dark:border-zinc-800 py-3">
       <div class="font-bold">Harga Kesepakatan</div>
       <div class="text-right">{{ formatRupiah(params.harga_kesepakatan) }}</div>
   </div>
-  <div class="flex justify-between py-2">
+  <div class="flex justify-between border-b border-zinc-200 dark:border-zinc-800 py-3">
       <div class="font-bold">Data Pajak Pembeli</div>
       <div class="text-right">{{ formatRupiah(params.data_pajak_pembeli) }}</div>
   </div>
-  <div class="flex justify-between py-2">
+  <div class="flex justify-between border-b py-3">
       <div class="font-bold">Data Pajak Penjual</div>
       <div class="text-right">{{ formatRupiah(params.data_pajak_penjual) }}</div>
   </div>
