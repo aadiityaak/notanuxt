@@ -92,7 +92,7 @@
           <Message v-if="$form.password_confirmation?.invalid" severity="error" size="small" variant="simple">{{ $form.password_confirmation.error.message }}</Message>
         </IftaLabel>
       <Toast />
-      <div class="flex justify-between">
+      <div class="flex justify-between" v-if="state.id === user.id">
         <div>
             <Button label="Back" size="small" type="button" variant="outlined" severity="primary" @click="router.back()">
                 <Icon name="lucide:arrow-left" class="text-rose-700" /> Back
@@ -117,6 +117,7 @@
 <script setup lang="ts">
     const toast = useToast()
     const router = useRouter()
+    const user = useSanctumUser()
     const confirm = useConfirm()
     const jabatan = [
         { name: 'Manager' },
@@ -142,21 +143,43 @@
     const message = ref('')
     const src = ref('')
     const handleUpdate = async () => {
-        try {
-            const response = await client(`/api/karyawans/${idUser}`, {
-                method: 'PUT',
-                body: state.value
-            })
-            toast.add({ severity: 'success', summary: 'Success', detail: 'Update karyawan berhasil!', life: 3000 })
-        }
-        catch (error : any) {
-            if (error.response.status === 403) {
-                message.value = 'Anda tidak memiliki akses untuk mengupdate data karyawan ini.'
-            } else {
-                message.value = 'Terjadi kesalahan.'
-            }
-            toast.add({ severity: 'error', summary: 'Error', detail: message, life: 3000 })
-        }
+      try {
+          const formData = new FormData()
+          
+          formData.append('name', state.value.name)
+          formData.append('email', state.value.email)
+          formData.append('phone', state.value.phone)
+          formData.append('address', state.value.address)
+          formData.append('position', state.value.position)
+          if (state.value.avatar) {
+              formData.append('avatar', state.value.avatar)
+          }
+
+          const response = await client(`/api/karyawans/${state.value.id}`, {
+              method: 'PUT',
+              body: formData,
+          });
+
+          toast.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Update karyawan berhasil!',
+              life: 3000
+          });
+          router.back()
+      } catch (error: any) {
+          if (error.response.status === 403) {
+              message.value = 'Anda tidak memiliki akses untuk mengupdate data karyawan ini.';
+          } else {
+              message.value = 'Terjadi kesalahan.';
+          }
+          toast.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: message.value,
+              life: 3000
+          })
+      }
     }
     const deleteUser = async (id: string) => {
         confirm.require({

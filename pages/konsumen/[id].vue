@@ -33,27 +33,27 @@
             <label for="sertifikat">Sertifikat</label>
             <Message v-if="$form.sertifikat?.invalid" severity="error" size="small" variant="simple">{{ $form.sertifikat.error.message }}</Message>
         </IftaLabel>
-        <IftaLabel class="mb-3">
+        <IftaLabel class="mb-3" v-if="canSee">
             <InputNumber mode="currency" name="nilai_transaksi" currency="IDR" locale="id-ID" id="nilai_transaksi" v-model="state.nilai_transaksi" class="w-full" type="number" variant="filled"/>
             <label for="nilai_transaksi">Nilai Transaksi</label>
             <Message v-if="$form.nilai_transaksi?.invalid" severity="error" size="small" variant="simple">{{ $form.nilai_transaksi.error.message }}</Message>
         </IftaLabel>
-        <IftaLabel class="mb-3">
+        <IftaLabel class="mb-3" v-if="canSee">
             <InputNumber mode="currency" name="harga_real" currency="IDR" locale="id-ID" id="harga_real" v-model="state.harga_real" class="w-full" type="number" variant="filled"/>
             <label for="harga_real">Harga Real</label>
             <Message v-if="$form.harga_real?.invalid" severity="error" size="small" variant="simple">{{ $form.harga_real.error.message }}</Message>
         </IftaLabel>
-        <IftaLabel class="mb-3">
+        <IftaLabel class="mb-3" v-if="canSee">
             <InputNumber mode="currency" name="harga_kesepakatan" currency="IDR" locale="id-ID" id="harga_kesepakatan" v-model="state.harga_kesepakatan" class="w-full" type="number" variant="filled" />
             <label for="harga_kesepakatan">Harga Kesepakatan</label>
             <Message v-if="$form.harga_kesepakatan?.invalid" severity="error" size="small" variant="simple">{{ $form.harga_kesepakatan.error.message }}</Message>
         </IftaLabel>
-        <IftaLabel class="mb-3">
+        <IftaLabel class="mb-3" v-if="canSee">
             <InputNumber mode="currency" name="data_pajak_pembeli" currency="IDR" locale="id-ID" id="data_pajak_pembeli" v-model="state.data_pajak_pembeli" class="w-full" type="number" variant="filled" />
             <label for="data_pajak_pembeli">Data Pajak Pembeli</label>
             <Message v-if="$form.data_pajak_pembeli?.invalid" severity="error" size="small" variant="simple">{{ $form.data_pajak_pembeli.error.message }}</Message>
         </IftaLabel>
-        <IftaLabel class="mb-3">
+        <IftaLabel class="mb-3" v-if="canSee">
             <InputNumber mode="currency" name="data_pajak_penjual" currency="IDR" locale="id-ID" id="data_pajak_penjual" v-model="state.data_pajak_penjual" class="w-full" type="number" variant="filled" />
             <label for="data_pajak_penjual">Data Pajak Penjual</label>
             <Message v-if="$form.data_pajak_penjual?.invalid" severity="error" size="small" variant="simple">{{ $form.data_pajak_penjual.error.message }}</Message>
@@ -87,7 +87,7 @@
 </template>
 
 <script setup lang="ts">
-
+const user = useSanctumUser() as any
 const router = useRouter()
 const client = useSanctumClient()
 const toast = useToast()
@@ -96,6 +96,9 @@ const idUser = useRoute().params.id
 const newUser = idUser == 'new'
 definePageMeta({
     title: 'Kelola Konsumen'
+})
+const canSee = computed(() => {
+    return user.value.is_admin === 1 || user.value.position === 'Keuangan'
 })
 const state = ref({
     name: '',

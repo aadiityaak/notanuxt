@@ -31,23 +31,23 @@
       <div class="font-bold">Sertifikat</div>
       <div class="text-right">{{ params.sertifikat }}</div>
   </div>
-  <div class="flex justify-between border-b border-zinc-200 dark:border-zinc-800 py-3">
+  <div v-if="canSee" class="flex justify-between border-b border-zinc-200 dark:border-zinc-800 py-3">
       <div class="font-bold">Nilai Transaksi</div>
       <div class="text-right">{{ formatRupiah(params.nilai_transaksi) }}</div>
   </div>
-  <div class="flex justify-between border-b border-zinc-200 dark:border-zinc-800 py-3">
+  <div v-if="canSee" class="flex justify-between border-b border-zinc-200 dark:border-zinc-800 py-3">
       <div class="font-bold">Harga Real</div>
       <div class="text-right">{{ formatRupiah(params.harga_real) }}</div>
   </div>
-  <div class="flex justify-between border-b border-zinc-200 dark:border-zinc-800 py-3">
+  <div v-if="canSee" class="flex justify-between border-b border-zinc-200 dark:border-zinc-800 py-3">
       <div class="font-bold">Harga Kesepakatan</div>
       <div class="text-right">{{ formatRupiah(params.harga_kesepakatan) }}</div>
   </div>
-  <div class="flex justify-between border-b border-zinc-200 dark:border-zinc-800 py-3">
+  <div v-if="canSee" class="flex justify-between border-b border-zinc-200 dark:border-zinc-800 py-3">
       <div class="font-bold">Data Pajak Pembeli</div>
       <div class="text-right">{{ formatRupiah(params.data_pajak_pembeli) }}</div>
   </div>
-  <div class="flex justify-between border-b py-3">
+  <div v-if="canSee" class="flex justify-between border-b py-3">
       <div class="font-bold">Data Pajak Penjual</div>
       <div class="text-right">{{ formatRupiah(params.data_pajak_penjual) }}</div>
   </div>
@@ -63,8 +63,12 @@
 </template>
 
 <script lang="ts" setup>  
-  const params = ref({} as any);
-  const dialogRef = inject('dialogRef') as any;
+  const params = ref({} as any)
+  const user = useSanctumUser() as any
+  const canSee = computed(() => {
+      return user.value.is_admin === 1 || user.value.position === 'Keuangan'
+  })
+  const dialogRef = inject('dialogRef') as any
   onMounted(() => {
       params.value = dialogRef.value.data;
   })
