@@ -38,9 +38,19 @@
             <MultiSelect id="document" v-model="state.document" :options="documentOptions" optionLabel="name" optionValue="name" filter class="w-full" variant="filled"/>
             <label for="document">Dokumen</label>
         </IftaLabel>
-        <div>
-            <Toast />
-            <Button label="Update" type="submit"><Icon name="lucide:user-plus"/> Simpan</Button>
+        <Toast />
+        <div class="flex justify-between">
+            <div>
+                <Button label="Back" size="small" type="button" variant="outlined" severity="primary" @click="router.back()">
+                    <Icon name="lucide:arrow-left" class="text-rose-700" /> Back
+                </Button>
+                <Button label="Save" size="small" type="submit" variant="outlined" severity="primary" class="ml-2">
+                    <Icon name="lucide:save" class="text-rose-700" /> Save
+                </Button>
+            </div>
+            <Button label="Delete" size="small" variant="outlined" severity="primary" @click="deleteOrder(state.id)">
+                <Icon name="lucide:trash" variant="outline" class="text-rose-700" /> Delete
+            </Button>
         </div>
     </Form>
 </template>
@@ -48,6 +58,8 @@
 <script setup lang="ts">
     const idOrder = useRoute().params.id
     const toast = useToast()
+    const router = useRouter()
+    const confirm = useConfirm()
     const newOrder = idOrder == 'new'
     definePageMeta({
         title: 'Kelola Order',
@@ -87,7 +99,25 @@
         })
         toast.add({ severity: 'success', summary: 'Success', detail: 'Update order berhasil!', life: 3000 })
     }
-
+    const deleteOrder = async (id: number) => {
+        await confirm.require({
+            message: 'Apakah anda yakin ingin menghapus order ini?',
+            header: 'Konfirmasi hapus order',
+            icon: 'pi pi-info-circle',
+            acceptClass: 'p-button-danger',
+            accept: async () => {
+                try {
+                    await client(`/api/orders/${id}`, {
+                        method: 'DELETE',
+                    })
+                    toast.add({ severity: 'success', summary: 'Success', detail: 'Hapus order berhasil!', life: 3000 })
+                    router.push('/order')
+                } catch (error) {
+                    toast.add({ severity: 'error', summary: 'Error', detail: 'Hapus order gagal!', life: 3000 })
+                }
+            },
+        })
+    }
     onMounted(async () => {
         if(!newOrder) {
             const response = await client(`/api/orders/${idOrder}`)

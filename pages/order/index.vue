@@ -13,10 +13,20 @@
           {{ formatPrice(slotProps.data.price) }}
         </template>
       </Column>
-      <Column header="">
+      <Column header="" class="flex justify-end gap-2">
         <template #body="slotProps">
-          <Button severity="primary" @click="viewOrder(slotProps.data)" variant="outlined" size="small">
+          <Button severity="primary" variant="outlined" size="small">
             <Icon name="lucide:eye" />
+          </Button>
+          <Button severity="primary" variant="outlined" size="small">
+            <Icon name="lucide:list" />
+            <Badge value="2" class="ml-1" severity="danger"/>
+          </Button>
+          <Button severity="primary" @click="viewOrder(slotProps.data)" variant="outlined" size="small">
+            <Icon name="lucide:pencil" />
+          </Button>
+          <Button severity="primary" variant="outlined" size="small">
+            <Icon name="lucide:trash" />
           </Button>
         </template>
       </Column>
