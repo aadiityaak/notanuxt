@@ -57,8 +57,8 @@
         </div>
     </div>
   </template>
-  <Toast />
   </ConfirmPopup>
+  <Toast />
   <Paginator
     :rows="data.per_page"
     :totalRecords="data.total"

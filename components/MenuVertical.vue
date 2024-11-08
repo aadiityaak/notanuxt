@@ -2,12 +2,12 @@
   <div class="menu-vertical">
     <div class="flex flex-col w-[300px] mt-4 mb-4 ms-4 h-[calc(100vh-2rem)] 
     border-0 rounded-lg bg-zinc-50 dark:bg-zinc-900 sticky top-4">
-      <div class="flex items-center justify-between px-6 pt-4 shrink-0">
+      <div class="flex items-center justify-between px-6 pt-6 pb-4 shrink-0">
         <span class="inline-flex items-center gap-2">
-          <span class="font-semibold text-2xl text-primary">Menu</span>
+          <span class="font-bold text-2xl text-primary">Asisten Notaris</span>
         </span>
       </div>
-      <ScrollPanel class="grow w-full min-h-0">
+      <ScrollPanel class="grow w-full min-h-0 py-4">
         <PanelMenu 
         :model="items" class="px-4"
         v-model:expandedKeys="expandedKeys"
@@ -74,7 +74,7 @@
           label: 'List', 
           to: '/konsumen',
           icon: 'lucide:users',
-       },
+        },
         { 
           label: 'Tambah', 
           to: '/konsumen/new',
@@ -115,19 +115,7 @@
           icon: 'lucide:user-plus',
         },
       ],
-    },
-    {
-      key: 4,
-      label: 'Option',
-      icon: 'lucide:settings',
-      items: [
-        { 
-          label: 'Umum', 
-          to: '/option',
-          icon: 'lucide:layout-list',
-        },
-      ],
-    },
+    }
   ]) as any;
 
   onMounted(() => {

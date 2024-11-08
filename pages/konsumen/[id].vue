@@ -76,7 +76,7 @@
                     <Icon name="lucide:arrow-left" class="text-rose-700" /> Back
                 </Button>
                 <Button label="Save" size="small" type="submit" variant="outlined" severity="primary" class="ml-2">
-                    <Icon name="lucide:user-plus" class="text-rose-700"/> {{ newUser ? 'Tambah Konsumen' : 'Update Konsumen' }}
+                    <Icon name="lucide:user-plus" class="text-rose-700" /> {{ newUser ? 'Tambah Konsumen' : 'Update Konsumen' }}
                 </Button>
             </div>
             <Button label="Delete" size="small" variant="outlined" severity="primary" @click="deleteKonsumen(state.id)">

@@ -4,7 +4,7 @@
       :image="storageUrl + '/' + userStore.user.avatar" 
       shape="circle" 
       size="xlarge" 
-      v-if="userStore.user && userStore.user.avatar !== null" 
+      v-if="userStore.user && userStore.user.avatar" 
       class="mb-4" 
     />
     <Avatar 
@@ -65,10 +65,39 @@
         <label for="avatar">Avatar</label>
       </IftaLabel>
 
+      <IftaLabel>
+        <InputText 
+          type="password" 
+          id="password" 
+          name="password" 
+          v-model="state.password" 
+          class="w-full" 
+          variant="filled" 
+          autocomplete="new-password" 
+        />
+        <label for="password">Password</label>
+        <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple">{{ $form.password.error.message }}</Message>
+        </IftaLabel>
+        <IftaLabel>
+          <InputText 
+            type="password" 
+            id="password_confirmation" 
+            name="password_confirmation" 
+            v-model="state.password_confirmation" 
+            class="w-full" 
+            variant="filled" 
+            autocomplete="new-password" 
+          />
+          <label for="password_confirmation">Konfirmasi Password</label>
+          <Message v-if="$form.password_confirmation?.invalid" severity="error" size="small" variant="simple">{{ $form.password_confirmation.error.message }}</Message>
+        </IftaLabel>
       <Toast />
-      <div>
-        <Button label="Update" type="submit">
-          <Icon name="lucide:user-plus" /> Update Profile
+      <div class="flex">
+        <Button label="Back" size="small" type="button" variant="outlined" severity="primary" @click="router.back()">
+            <Icon name="lucide:arrow-left" class="text-rose-700" /> Back
+        </Button>
+        <Button label="Update" type="submit" size="small" variant="outlined" severity="primary" class="ml-2">
+          <Icon name="lucide:save" class="text-rose-700" /> Save
         </Button>
       </div>
     </Form>
@@ -76,10 +105,8 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({
-  title: 'Profile',
-});
-
+definePageMeta({ title: 'Profile' });
+const router = useRouter();
 const config = useSanctumConfig();
 const storageUrl = config.baseUrl + '/storage';
 const userStore = useUserStore();
@@ -102,6 +129,8 @@ const state = ref({
   phone: '',
   address: '',
   position: '',
+  password: '',
+  password_confirmation: '', 
 });
 
 const toast = useToast();
@@ -123,12 +152,21 @@ const resolver = () => {
   if (!state.value.address) {
     errors.address = [{ message: 'Alamat wajib diisi' }];
   }
+  if (state.value.password && state.value.password.length < 8) {
+    errors.password = [{ message: 'Password minimal 8 karakter' }];
+  }
+  if (state.value.password && state.value.password !== state.value.password_confirmation) {
+    errors.password_confirmation = [{ message: 'Password dan konfirmasi tidak cocok' }];
+  }
   
   return { errors };
 };
 
 const handleUpdate = async ({ valid }) => {
-  if (!valid) return;
+  if (!valid) {
+    toast.add({ severity: 'error', summary: 'Error', detail: 'Pastikan semua kolom telah diisi dengan benar!', life: 3000 });
+    return;
+  }
 
   try {
     const formData = new FormData();
@@ -154,7 +192,16 @@ const handleUpdate = async ({ valid }) => {
 
 onMounted(() => {
   if (user.value) {
-    state.value = { ...state.value, ...user.value };
+    state.value = { 
+      email: user.value.email,
+      name: user.value.name,
+      phone: user.value.phone,
+      address: user.value.address,
+      position: user.value.position,
+      avatar: user.value.avatar,
+      password: '',
+      password_confirmation: ''
+    };
   }
 });
 
