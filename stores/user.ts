@@ -3,13 +3,11 @@ import { ref } from 'vue';
 
 export const useUserStore = defineStore('user', () => {
   const user = ref({
-    email: '',
     name: '',
     avatar: '',
   });
 
-  function setUser(data: { email: string; name: string; avatar?: string }) {
-    user.value.email = data.email;
+  function setUser(data: { name: string; avatar?: string }) {
     user.value.name = data.name;
     if (data.avatar) user.value.avatar = data.avatar;
   }

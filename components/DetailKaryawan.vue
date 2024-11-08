@@ -1,8 +1,12 @@
 <template>
-    <div class="w-full text-center mb-4">
+    <div class="w-full text-center my-4">
         <Avatar v-if="params.avatar !== null" :image="storageUrl + '/' + params.avatar" shape="circle" size="xlarge" class="mb-4" />
         <Avatar v-else shape="circle" size="xlarge" class="mb-4" > {{ params.name.charAt(0) }} </Avatar>
         <div v-if="params.is_admin === 1" class="text-rose-700 font-bold"><Icon name="lucide:verified" /> Administrator</div>
+    </div>
+    <div class="flex justify-between border-b border-zinc-200 dark:border-zinc-800 py-3">
+        <div class="font-bold">Nama</div>
+        <div class="text-right">{{ params.name }}</div>
     </div>
     <div class="flex justify-between border-b border-zinc-200 dark:border-zinc-800 py-3">
         <div class="font-bold">Email</div>

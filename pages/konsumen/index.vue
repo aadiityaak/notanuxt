@@ -57,6 +57,7 @@
         </div>
     </div>
   </template>
+  <Toast />
   </ConfirmPopup>
   <Paginator
     :rows="data.per_page"
@@ -81,6 +82,7 @@
 const route = useRoute()
 const dialog = useDialog()
 const confirm = useConfirm()
+const toast = useToast()
 const DetailKonsumen = defineAsyncComponent(() => import('~/components/DetailKonsumen.vue'))
 const page = ref(route.query.page ? Number(route.query.page) : 1);
 const client = useSanctumClient()
@@ -110,6 +112,7 @@ const deleteKonsumen = async (id: number) => {
       await client(`/api/customers/${id}`, {
         method: 'DELETE',
       });
+      toast.add({ severity: 'success', summary: 'Success', detail: 'Delete konsumen berhasil!', life: 3000 })
       refresh();
     },
   })
@@ -127,6 +130,7 @@ const showDialog = (konsumen: any) => {
           header: `${konsumen.name}`,
           dismissableMask: true,
           dismissable: true,
+          showHeader: false,
           class: 'w-full max-w-[500px]',
           modal: true
       } as any,

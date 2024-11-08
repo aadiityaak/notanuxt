@@ -53,6 +53,7 @@
         </div>
     </template>
     </ConfirmPopup>
+    <Toast />
     <Paginator
       :rows="data.per_page"
       :totalRecords="data.total"
@@ -77,6 +78,7 @@
     const route = useRoute()
     const confirm = useConfirm()
     const dialog = useDialog()
+    const toast = useToast()
     const config = useSanctumConfig()
     const storageUrl = config.baseUrl + '/storage'
     const client = useSanctumClient()
@@ -101,6 +103,8 @@
           data: karyawan,
           props: {
               header: `${karyawan.name}`,
+              size: 'xl',
+              showHeader: false,
               dismissableMask: true,
               dismissable: true,
               class: 'w-full max-w-[500px]',
@@ -122,10 +126,24 @@
           label: 'Hapus'
       },
       accept: async () => {
-        await client(`/api/karyawans/${id}`, {
-          method: 'DELETE',
-        });
-        refresh();
+        try {
+          await client(`/api/karyawans/${id}`, {
+            method: 'DELETE',
+          });
+          toast.add({ severity: 'success', summary: 'Success', detail: 'Delete user berhasil!', life: 3000 })
+          refresh();
+        }
+        catch (error: any) {
+          let message = ''
+          console.log(error.response)
+          if (error.response.status === 403) {
+            message = 'Anda tidak memiliki akses untuk menghapus data user ini.'
+          } else {
+            message = 'Terjadi kesalahan.'
+          }
+          toast.add({ severity: 'error', summary: 'Error', detail: message, life: 3000 })
+        }
+
       },
     });
     }
